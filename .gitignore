@@ -1,0 +1,10 @@
+# project
+**/day*/*input*.txt
+**/day*/test*.py
+
+# python
+__pycache__/
+
+
+# mac
+.DS_Store

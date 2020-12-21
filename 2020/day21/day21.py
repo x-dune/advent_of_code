@@ -1,6 +1,6 @@
 from collections import defaultdict, Counter
-import itertools
 from pathlib import Path
+from itertools import chain
 
 
 def get_puzzle_input(test_case=0):
@@ -15,59 +15,76 @@ def get_puzzle_input(test_case=0):
         return [parse_line(x) for x in f.read().splitlines()]
 
 
-def main(puzzle_input):
-    all_allergens = set()
-    all_ings = set()
-    for (ings, allergens) in puzzle_input:
-        for allergen in allergens:
-            all_allergens.add(allergen)
-        for ing in ings:
-            all_ings.add(ing)
+def identify_allergens(puzzle_input):
+    all_allergens = set(chain(*[allergens for (_, allergens) in puzzle_input]))
 
-    ingredient_allergen = defaultdict(set)
-
+    allergen_to_ingredient = defaultdict(set)
+    # get potential ingredients for each allergen
     for allergen in all_allergens:
-        raw_ingredients = [x[0] for x in puzzle_input if allergen in x[1]]
+        food_containing_allergen = [
+            ingredients
+            for (ingredients, allergens) in puzzle_input
+            if allergen in allergens
+        ]
 
-        ingredients = list(itertools.chain.from_iterable(raw_ingredients))
-        counted = Counter(ingredients)
+        counted = Counter(chain(*food_containing_allergen))
 
-        for ing in counted:
-            if counted[ing] == len(raw_ingredients):
-                ingredient_allergen[ing].add(allergen)
+        for ingredient in counted:
+            if counted[ingredient] == len(food_containing_allergen):
+                allergen_to_ingredient[allergen].add(ingredient)
 
-    def remove_allergen(ingredient_allergen, allergen):
-        for ing in ingredient_allergen:
-            current = ingredient_allergen[ing]
-            if len(current) != 1 and allergen in current:
-                current.remove(allergen)
-                if len(current) == 1:
-                    remove_allergen(ingredient_allergen, list(current)[0])
+    def recurse_remove(ingredient, allergen_to_ingredient):
+        for allergen in allergen_to_ingredient:
+            ingredients = allergen_to_ingredient[allergen]
+            if len(ingredients) != 1 and ingredient in ingredients:
+                ingredients.remove(ingredient)
+                if len(ingredients) == 1:
+                    last_ingredient = list(ingredients)[0]
+                    recurse_remove(last_ingredient, allergen_to_ingredient)
 
-    for ing in ingredient_allergen:
-        if len(ingredient_allergen[ing]) == 1:
-            remove_allergen(ingredient_allergen, list(ingredient_allergen[ing])[0])
+    # if ingredient is the only potential for an allergen then
+    # recursively remove from other allergen's potential ingredients
+    for allergen in allergen_to_ingredient:
+        ingredients = allergen_to_ingredient[allergen]
+        if len(ingredients) == 1:
+            recurse_remove(list(ingredients)[0], allergen_to_ingredient)
 
-    not_allergen = []
-    for ing in all_ings:
-        if not ing in ingredient_allergen:
-            not_allergen.append(ing)
+    # clean data
+    # extract only ingredient from set of potential ingredient
+    for allergen in allergen_to_ingredient:
+        ingredients = allergen_to_ingredient[allergen]
+        if len(ingredients) == 1:
+            allergen_to_ingredient[allergen] = list(ingredients)[0]
+        else:
+            # something has gone wrong
+            # if there is a set of potential ingredients with more than 1 ingredient
+            raise ValueError
 
+    return allergen_to_ingredient
+
+
+def solution1(puzzle_input, allergen_identity):
     count = 0
-    for (ings, _) in puzzle_input:
-        for ing in ings:
-            if ing in not_allergen:
+    for (ingredients, _) in puzzle_input:
+        for ingredient in ingredients:
+            if ingredient not in allergen_identity.values():
                 count += 1
+    return count
 
-    print("part1", count)
-    y = list(ingredient_allergen.items())
-    list.sort(y, key=lambda e: list(e[1])[0]) # extract first and only item from set
-    print(y)
-    print("part2", ",".join([x[0] for x in y]))
+
+def solution2(allergen_identity):
+    return ",".join(
+        [ingredient for (_, ingredient) in sorted(allergen_identity.items())]
+    )
 
 
 if __name__ == "__main__":
     from sys import argv
 
-    puzzle_input = get_puzzle_input(0)
-    main(puzzle_input)
+    puzzle_input = get_puzzle_input(
+        argv[argv.index("--test") + 1] if "--test" in argv[1:] else 0
+    )
+
+    allergen_identity = identify_allergens(puzzle_input)
+    print(solution1(puzzle_input, allergen_identity))
+    print(solution2(allergen_identity))

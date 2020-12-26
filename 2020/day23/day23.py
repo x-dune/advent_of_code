@@ -1,18 +1,4 @@
 from pathlib import Path
-from collections import deque
-from time import time
-
-
-class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
-
-    def __str__(self):
-        return f"{self.data}->{self.next.data if self.next else '???'}"
-
-    def __repr__(self):
-        return self.__str__()
 
 
 def get_puzzle_input(test_case=0):
@@ -21,84 +7,73 @@ def get_puzzle_input(test_case=0):
         return list(map(int, (f.read().rstrip())))
 
 
-def main(cups_dict, first):
-    curr = cups_dict[first]
-    for _ in range(10_000_000):
-        pick_up = [curr.next, curr.next.next, curr.next.next.next]
+def get_next_cups(cups, part2=False):
+    n = 1_000_000 if part2 else 9
+    next_cups = [None for _ in range(n + 1)]
 
-        dest = 1_000_000 if curr.data == 1 else curr.data - 1
-        while dest in {x.data for x in pick_up}:
-            dest -= 1
-            if dest == 0:
-                dest = 1_000_000
-        curr.next = curr.next.next.next.next
-        pick_up[-1].next = cups_dict[dest].next
-        cups_dict[dest].next = pick_up[0]
-        curr = curr.next
-    return cups_dict
-
-
-def get_solution1(cups):
-    found1 = 0
-    answer = []
-    pointer = cups.head
-    while found1 != 2:
-        pointer = pointer.next
-        if found1 == 1 and pointer.data != 1:
-            answer.append(str(pointer.data))
-        if pointer.data == 1:
-            found1 += 1
-    return "".join(answer)
-
-
-def make_cups_dict(cups):
-    cups_dict = {x: Node(x) for x in range(1, 10)}
     for i in range(len(cups) - 1):
-        cups_dict[cups[i]].next = cups_dict[cups[i + 1]]
-    cups_dict[cups[-1]].next = cups_dict[cups[0]]
-    return cups_dict
+        next_cups[cups[i]] = cups[i + 1]
+
+    if not part2:
+        next_cups[cups[-1]] = cups[0]
+    else:
+        next_cups[cups[-1]] = 10
+        for i in range(10, 1_000_000):
+            next_cups[i] = i + 1
+        next_cups[1_000_000] = cups[0]
+
+    return next_cups
 
 
-def make_cups_dict2(cups):
-    n = 1_000_000
-    cups_dict = {x: Node(x) for x in range(1, n + 1)}
-    for i in range(len(cups) - 1):
-        cups_dict[cups[i]].next = cups_dict[cups[i + 1]]
+def shuffle_cups(puzzle_input, part2=False):
+    next_cups = get_next_cups(puzzle_input, part2)
+    current = puzzle_input[0]
+    max_cup = len(next_cups) - 1
+    for _ in range(10_000_000 if part2 else 100):
+        pick_up1 = next_cups[current]
+        pick_up2 = next_cups[pick_up1]
+        pick_up3 = next_cups[pick_up2]
 
-    cups_dict[cups[-1]].next = cups_dict[10]
+        pick_ups = (pick_up1, pick_up2, pick_up3)
 
-    for i in range(10, n):
-        cups_dict[i].next = cups_dict[i + 1]
-    cups_dict[n].next = cups_dict[cups[0]]
+        dest = max_cup if current == 1 else current - 1
+        while dest in pick_ups:
+            dest = max_cup if dest == 1 else dest - 1
 
-    return cups_dict
+        next_cups[current] = next_cups[pick_up3]
+        next_cups[pick_up3] = next_cups[dest]
+        next_cups[dest] = pick_up1
+
+        current = next_cups[current]
+
+    return next_cups
 
 
-def get_answer1(cups_dict):
-    current = cups_dict[1]
-    answer = []
-    while True:
-        current = current.next
-        if current.data == 1:
-            break
-        else:
-            answer.append(str(current.data))
-    return "".join(answer)
+def solution1(puzzle_input):
+    next_cups = shuffle_cups(puzzle_input)
+
+    result = []
+    current = next_cups[1]
+    while current != 1:
+        result.append(current)
+        current = next_cups[current]
+    return "".join(map(str, result))
+
+
+def solution2(puzzle_input):
+    next_cups = shuffle_cups(puzzle_input, part2=True)
+
+    next_to_1 = next_cups[1]
+    next_next_to_1 = next_cups[next_to_1]
+
+    return next_to_1 * next_next_to_1
 
 
 if __name__ == "__main__":
     from sys import argv
 
-    start_time = time()
     puzzle_input = get_puzzle_input(
         argv[argv.index("--test") + 1] if "--test" in argv[1:] else 0
     )
-    cups_dict2 = make_cups_dict2(puzzle_input)
-    answer = main(cups_dict2, puzzle_input[0])
-    print(
-        answer[1].next.data,
-        answer[1].next.next.data,
-        answer[1].next.data * answer[1].next.next.data,
-    )
-
-    print(f"Time: {'{0:.2f}'.format(time() - start_time)} seconds")
+    print(solution1(puzzle_input))
+    print(solution2(puzzle_input))

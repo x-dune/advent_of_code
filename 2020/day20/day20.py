@@ -79,7 +79,7 @@ def get_puzzle_input(test_case=0):
         return dict(parse_image(x) for x in f.read().rstrip().split("\n\n"))
 
 
-def process_puzzle_input(puzzle_input):
+def main(puzzle_input):
     edges_to_id = defaultdict(list)
     for id in puzzle_input:
         for edge in all_edges(puzzle_input[id]):
@@ -92,7 +92,7 @@ def process_puzzle_input(puzzle_input):
                 connections[id] += 0.5
     img_corners = [x for x in connections if connections[x] == 2]
 
-    print("part1", reduce(mul, img_corners))
+    part1 = reduce(mul, img_corners)
 
     # rotate until left edge and top edge is not connected
     top_left_corner = puzzle_input[img_corners[0]]
@@ -167,11 +167,15 @@ def process_puzzle_input(puzzle_input):
         for point in line:
             if point == "#":
                 space_occupied_by_monster += 1
-    print("part2", total - (sea_monster_count * space_occupied_by_monster))
+
+    part2 = total - (sea_monster_count * space_occupied_by_monster)
+    return (part1, part2)
 
 
 if __name__ == "__main__":
     from sys import argv
 
-    puzzle_input = get_puzzle_input()
-    process_puzzle_input(puzzle_input)
+    puzzle_input = get_puzzle_input(
+        argv[argv.index("--test") + 1] if "--test" in argv[1:] else 0
+    )
+    print(main(puzzle_input))

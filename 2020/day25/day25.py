@@ -29,4 +29,4 @@ if __name__ == "__main__":
     puzzle_input = get_puzzle_input(
         argv[argv.index("--test") + 1] if "--test" in argv[1:] else 0
     )
-    solution1(puzzle_input)
+    print(solution1(puzzle_input))

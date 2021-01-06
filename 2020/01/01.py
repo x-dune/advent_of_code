@@ -1,4 +1,5 @@
 from pathlib import Path
+from itertools import combinations
 
 
 def get_puzzle_input(test_case=0):
@@ -8,18 +9,15 @@ def get_puzzle_input(test_case=0):
 
 
 def solution1(lines):
-    for i in range(0, len(lines) - 1):
-        for j in range(i + 1, len(lines)):
-            if lines[i] + lines[j] == 2020:
-                return lines[i] * lines[j]
+    for (x, y) in combinations(lines, 2):
+        if x + y == 2020:
+            return x * y
 
 
 def solution2(lines):
-    for i in range(0, len(lines) - 1):
-        for j in range(i + 1, len(lines)):
-            for k in range(j + 1, len(lines)):
-                if lines[i] + lines[j] + lines[k] == 2020:
-                    return lines[i] * lines[j] * lines[k]
+    for (x, y, z) in combinations(lines, 3):
+        if x + y + z == 2020:
+            return x * y * z
 
 
 if __name__ == "__main__":

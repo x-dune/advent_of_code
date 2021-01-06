@@ -1,6 +1,6 @@
 # project
-**/day*/*input*.txt
-**/day*/test*.py
+*input*.txt
+test*.py
 
 # python
 __pycache__/

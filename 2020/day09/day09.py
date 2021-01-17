@@ -21,7 +21,7 @@ def solution1(lines, is_test):
                     elif lines[j] + lines[k] == target:
                         # break nested loop
                         raise Exception
-        except:
+        except Exception:
             pass
 
 

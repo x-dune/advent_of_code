@@ -4,7 +4,7 @@ from pathlib import Path
 def get_puzzle_input(test_case=0):
     file_path = "input.txt" if not test_case else f"test_input_{test_case}.txt"
     with open(Path(__file__).parent.absolute() / file_path, "r") as f:
-        return  [x.split("\n") for x in f.read().rstrip().split("\n\n")]
+        return [x.split("\n") for x in f.read().rstrip().split("\n\n")]
 
 
 def count_group_yes(group):
@@ -13,7 +13,7 @@ def count_group_yes(group):
         for char in answer:
             try:
                 group_yes[char] = group_yes[char] + 1
-            except:
+            except KeyError:
                 group_yes[char] = 1
     return group_yes
 
@@ -40,4 +40,3 @@ if __name__ == "__main__":
     )
     print(solution1(puzzle_input))
     print(solution2(puzzle_input))
-

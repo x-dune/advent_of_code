@@ -4,7 +4,7 @@ import re
 
 def get_puzzle_input(test_case=0):
     def parseInputLine(line):
-        return dict([x.split(":") for x in re.split("\s|\n", line)])
+        return dict([x.split(":") for x in re.split(r"\s|\n", line)])
 
     file_path = "input.txt" if not test_case else f"test_input_{test_case}.txt"
     with open(Path(__file__).parent.absolute() / file_path, "r") as f:
@@ -31,7 +31,9 @@ def solution2(lines):
     count = 0
     for line in lines:
         try:
-            (height, height_unit) = re.match("(^\d{2,3})(cm|in)$", line["hgt"]).groups()
+            (height, height_unit) = re.match(
+                r"(^\d{2,3})(cm|in)$", line["hgt"]
+            ).groups()
 
             if (
                 (int(line["byr"]) >= 1920 and int(line["byr"]) <= 2002)
@@ -43,10 +45,10 @@ def solution2(lines):
                 )
                 and bool(re.match("^#[a-f0-9]{6}$", line["hcl"]))
                 and line["ecl"] in ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
-                and bool(re.match("^\d{9}$", line["pid"]))
+                and bool(re.match(r"^\d{9}$", line["pid"]))
             ):
                 count = count + 1
-        except:
+        except (KeyError, AttributeError):
             pass
     return count
 

@@ -9,8 +9,9 @@ def get_puzzle_input(test_case=0):
         parent_graph = {}
 
         for line in f.read().splitlines():
-            parent = re.search("(\w+ \w+) bags contain", line).group(1)
-            for count, child in re.findall("(\d+) (\w+ \w+) bags?", line):
+
+            parent = re.search(r"(\w+ \w+) bags contain", line).group(1)
+            for count, child in re.findall(r"(\d+) (\w+ \w+) bags?", line):
                 try:
                     parent_graph[parent][child] = int(count)
                 except KeyError:

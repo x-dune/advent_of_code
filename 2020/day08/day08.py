@@ -1,4 +1,3 @@
-import re
 from pathlib import Path
 
 
@@ -17,7 +16,7 @@ def run_instructions(instrucs):
     acc = 0
     i = 0
     try:
-        while not i in used_index:
+        while i not in used_index:
             (instruc, arg) = instrucs[i]
             used_index.append(i)
 
@@ -47,6 +46,7 @@ def solution2(lines):
             if last_index == len(lines):
                 return acc
 
+
 if __name__ == "__main__":
     from sys import argv
 
@@ -55,4 +55,3 @@ if __name__ == "__main__":
     )
     print(solution1(puzzle_input))
     print(solution2(puzzle_input))
-

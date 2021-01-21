@@ -28,7 +28,7 @@ def run_instructions(instrucs):
             i += 1
     except IndexError:
         pass
-    return (acc, i)
+    return (acc, i == len(instrucs))
 
 
 def solution1(lines):
@@ -42,8 +42,8 @@ def solution2(lines):
             changed_lines = lines.copy()
             changed_lines[i] = ("jmp" if instruc == "nop" else "nop", arg)
 
-            (acc, last_index) = run_instructions(changed_lines)
-            if last_index == len(lines):
+            (acc, did_terminate) = run_instructions(changed_lines)
+            if did_terminate:
                 return acc
 
 

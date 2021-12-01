@@ -21,7 +21,7 @@ pub fn solution2() -> i32 {
     let mut i = 0;
     /*
     We're not actually going to sum the sliding window, we're only going to compare the elements from both group that
-    don't overlap which is the  first element of the first group and the last element of the last group
+    don't overlap which is the first element of the first group and the last element of the last group
     */
     while i < input.len() - 3 {
         if input[i + 3] > input[i] {

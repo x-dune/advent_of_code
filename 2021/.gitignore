@@ -1,0 +1,4 @@
+/target
+
+# Project
+src/**/test_input.txt

@@ -12,7 +12,7 @@ def count_group_yes(group):
     for answer in group:
         for char in answer:
             try:
-                group_yes[char] = group_yes[char] + 1
+                group_yes[char] += 1
             except KeyError:
                 group_yes[char] = 1
     return group_yes
@@ -28,7 +28,7 @@ def solution2(lines):
         group_yes = count_group_yes(group)
         for key in group_yes:
             if group_yes[key] == len(group):
-                count_all_yes = count_all_yes + 1
+                count_all_yes += 1
     return count_all_yes
 
 

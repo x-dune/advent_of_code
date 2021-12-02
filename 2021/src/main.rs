@@ -1,6 +1,6 @@
-mod day01;
+mod day02;
 mod util;
 
 fn main() {
-    println!("{} {}", day01::solution1(), day01::solution2());
+    println!("{} {}", day02::solution1(), day02::solution2());
 }

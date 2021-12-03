@@ -1,6 +1,6 @@
-use crate::util;
+use aoc2021::util;
 
-pub fn solution1() -> i32 {
+fn solution1() -> i32 {
     let input = util::input_as_ints(include_str!("input.txt"));
 
     let mut counter = 0;
@@ -14,7 +14,7 @@ pub fn solution1() -> i32 {
     return counter;
 }
 
-pub fn solution2() -> i32 {
+fn solution2() -> i32 {
     let input = util::input_as_ints(include_str!("input.txt"));
 
     let mut counter = 0;
@@ -30,4 +30,8 @@ pub fn solution2() -> i32 {
         i += 1;
     }
     return counter;
+}
+
+fn main() {
+    println!("{} {}", solution1(), solution2())
 }

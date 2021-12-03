@@ -1,6 +1,6 @@
-use crate::util;
+use aoc2021::util;
 
-pub fn parsed_input() -> Vec<(&'static str, i32)> {
+fn parsed_input() -> Vec<(&'static str, i32)> {
     return util::input_as_lines(include_str!("input.txt"))
         .iter()
         .map(|x| {
@@ -13,7 +13,7 @@ pub fn parsed_input() -> Vec<(&'static str, i32)> {
         .collect::<Vec<(&str, i32)>>();
 }
 
-pub fn solution1() -> i32 {
+fn solution1() -> i32 {
     let input = parsed_input();
 
     let mut horizontal = 0;
@@ -35,7 +35,7 @@ pub fn solution1() -> i32 {
     return horizontal * depth;
 }
 
-pub fn solution2() -> i32 {
+fn solution2() -> i32 {
     let input = parsed_input();
 
     let mut horizontal = 0;
@@ -57,4 +57,8 @@ pub fn solution2() -> i32 {
     }
 
     return horizontal * depth;
+}
+
+fn main() {
+    println!("{} {}", solution1(), solution2())
 }

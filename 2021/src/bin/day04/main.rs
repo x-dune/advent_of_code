@@ -88,6 +88,7 @@ fn solution1() -> i32 {
 fn solution2() -> i32 {
     let drawn_numbers = get_drawn_numbers();
     let mut boards = get_boards();
+    let boards_length = boards.len();
 
     let mut winner_indexes: Vec<usize> = vec![];
     for number in drawn_numbers {
@@ -96,7 +97,9 @@ fn solution2() -> i32 {
                 mark_board(board, number);
                 if is_board_a_winner(&board) {
                     winner_indexes.push(i);
-                    println!("{}", sum_board(&board) * number);
+                    if boards_length == winner_indexes.len() {
+                        return sum_board(&board) * number;
+                    }
                 }
             }
         }

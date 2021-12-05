@@ -3,6 +3,8 @@ use aoc2021::util;
 type Board = Vec<Vec<i32>>;
 type Boards = Vec<Board>;
 
+const MARKED_VALUE: i32 = -1;
+
 fn get_drawn_numbers() -> Vec<i32> {
     let input = util::input_as_string(include_str!("input.txt"));
     let input_splitted = input.split("\n\n").collect::<Vec<&str>>();
@@ -35,14 +37,14 @@ fn get_boards() -> Boards {
 
 fn is_board_a_winner(board: &Board) -> bool {
     for row in board {
-        if row.iter().all(|x| *x == -1) {
+        if row.iter().all(|x| *x == MARKED_VALUE) {
             return true;
         }
     }
 
     let transposed = util::transpose(board.to_vec());
     for row in transposed {
-        if row.iter().all(|x| *x == -1) {
+        if row.iter().all(|x| *x == MARKED_VALUE) {
             return true;
         }
     }
@@ -53,7 +55,7 @@ fn mark_board(board: &mut Board, number: i32) {
     for row in board.iter_mut() {
         for cell in row.iter_mut() {
             if cell == &number {
-                *cell = -1;
+                *cell = MARKED_VALUE;
             }
         }
     }
@@ -63,7 +65,7 @@ fn sum_board(board: &Board) -> i32 {
     let mut sum = 0;
     for row in board {
         for cell in row {
-            if *cell != -1 {
+            if *cell != MARKED_VALUE {
                 sum += cell;
             }
         }

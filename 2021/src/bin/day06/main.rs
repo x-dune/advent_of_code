@@ -1,14 +1,8 @@
 use std::collections::HashMap;
 
-fn parse_input() -> Vec<i64> {
-    return include_str!("input.txt")
-        .trim()
-        .split(',')
-        .map(|x| x.parse::<i64>().unwrap())
-        .collect();
-}
+use aoc2021::util;
 
-fn solve(input: &Vec<i64>, number_of_days: i64) -> i64 {
+fn solve(input: &Vec<i32>, number_of_days: i32) -> i64 {
     let mut fish_to_days_left = HashMap::new();
 
     for days_left in input {
@@ -36,12 +30,12 @@ fn solve(input: &Vec<i64>, number_of_days: i64) -> i64 {
 }
 
 fn solution1() -> i64 {
-    let input = parse_input();
+    let input = util::input_as_ints_from_list(include_str!("input.txt"));
     return solve(&input, 80);
 }
 
 fn solution2() -> i64 {
-    let input = parse_input();
+    let input = util::input_as_ints_from_list(include_str!("input.txt"));
     return solve(&input, 256);
 }
 

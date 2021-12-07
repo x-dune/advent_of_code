@@ -10,7 +10,7 @@ pub fn input_as_ints_from_lines(input: &str) -> Vec<i32> {
     return input
         .trim()
         .split("\n")
-        .map(|x| x.parse::<i32>().unwrap())
+        .map(|x| x.parse().unwrap())
         .collect();
 }
 
@@ -18,10 +18,11 @@ pub fn input_as_ints_from_list(input: &str) -> Vec<i32> {
     return input
         .trim()
         .split(',')
-        .map(|x| x.parse::<i32>().unwrap())
+        .map(|x| x.parse().unwrap())
         .collect();
 }
 
+// Transpose a 2D array
 pub fn transpose<T>(v: Vec<Vec<T>>) -> Vec<Vec<T>> {
     assert!(!v.is_empty());
     let len = v[0].len();

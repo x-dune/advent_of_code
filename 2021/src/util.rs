@@ -6,10 +6,18 @@ pub fn input_as_lines(input: &str) -> Vec<&str> {
     return input.trim().split("\n").collect();
 }
 
-pub fn input_as_ints(input: &str) -> Vec<i32> {
+pub fn input_as_ints_from_lines(input: &str) -> Vec<i32> {
     return input
         .trim()
         .split("\n")
+        .map(|x| x.parse::<i32>().unwrap())
+        .collect();
+}
+
+pub fn input_as_ints_from_list(input: &str) -> Vec<i32> {
+    return input
+        .trim()
+        .split(',')
         .map(|x| x.parse::<i32>().unwrap())
         .collect();
 }

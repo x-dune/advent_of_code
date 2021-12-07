@@ -1,7 +1,7 @@
 use aoc2021::util;
 
 fn solution1() -> i32 {
-    let input = util::input_as_ints(include_str!("input.txt"));
+    let input = util::input_as_ints_from_lines(include_str!("input.txt"));
 
     let mut counter = 0;
     let mut i = 0;
@@ -15,7 +15,7 @@ fn solution1() -> i32 {
 }
 
 fn solution2() -> i32 {
-    let input = util::input_as_ints(include_str!("input.txt"));
+    let input = util::input_as_ints_from_lines(include_str!("input.txt"));
 
     let mut counter = 0;
     let mut i = 0;

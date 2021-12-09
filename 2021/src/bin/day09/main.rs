@@ -23,7 +23,11 @@ fn basin_size(input: &BTreeMap<(i32, i32), u32>, lowest_point: (i32, i32)) -> us
 
     while remaining.len() > 0 {
         let current @ (x, y) = remaining.pop_front().unwrap();
-        visited.insert(current);
+
+        if !visited.insert(current) {
+            continue;
+        }
+
         let neighbours = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)];
         let new_remaining = neighbours.iter().filter_map(|p| {
             if let Some(&height) = input.get(p) {

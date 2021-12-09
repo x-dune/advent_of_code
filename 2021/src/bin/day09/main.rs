@@ -17,6 +17,7 @@ fn parse_input() -> BTreeMap<(i32, i32), u32> {
 }
 
 fn basin_size(input: &BTreeMap<(i32, i32), u32>, lowest_point: (i32, i32)) -> usize {
+    // Traverse every basin node, outwards from the lowest_point
     let mut visited = HashSet::new();
     let mut remaining = VecDeque::from([lowest_point]);
 

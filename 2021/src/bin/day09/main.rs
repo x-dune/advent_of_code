@@ -1,80 +1,71 @@
-use std::collections::HashSet;
+use std::collections::{BTreeMap, HashSet, VecDeque};
 
 use aoc2021::util;
 
-fn parse_input() -> Vec<Vec<i32>> {
+fn parse_input() -> BTreeMap<(i32, i32), u32> {
     let lines = util::input_as_lines(include_str!("input.txt"));
 
     lines
         .iter()
-        .map(|s| {
+        .enumerate()
+        .flat_map(|(y, s)| {
             s.chars()
-                .map(|c| c.to_string().parse::<i32>().unwrap())
-                .collect()
+                .enumerate()
+                .map(move |(x, c)| ((x as i32, y as i32), c.to_digit(10).unwrap()))
         })
         .collect()
 }
 
-const HIGH: i32 = 9;
+fn basin_size(input: &BTreeMap<(i32, i32), u32>, lowest_point: (i32, i32)) -> usize {
+    let mut visited = HashSet::new();
+    let mut remaining = VecDeque::from([lowest_point]);
 
-fn get_basin_size(input: &Vec<Vec<i32>>, lowest_point: (usize, usize)) -> i32 {
-    let mut q = vec![lowest_point];
-    let mut done = vec![];
-    while q.len() != 0 {
-        let (y, x) = q.pop().unwrap();
-        if y != 0usize && input[y - 1][x] != HIGH && !done.contains(&(y - 1, x)) {
-            q.push((y - 1, x));
-        }
-        if y != input.len() - 1 && input[y + 1][x] != HIGH && !done.contains(&(y + 1, x)) {
-            q.push((y + 1, x));
-        }
+    while remaining.len() > 0 {
+        let current @ (x, y) = remaining.pop_front().unwrap();
+        visited.insert(current);
+        let neighbours = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)];
+        let new_remaining = neighbours.iter().filter_map(|p| {
+            if let Some(&height) = input.get(p) {
+                if !visited.contains(p) && height != 9 {
+                    return Some(p);
+                }
+            }
 
-        if x != 0usize && input[y][x - 1] != HIGH && !done.contains(&(y, x - 1)) {
-            q.push((y, x - 1));
-        }
+            return None;
+        });
 
-        if x != input[0].len() - 1 && input[y][x + 1] != HIGH && !done.contains(&(y, x + 1)) {
-            q.push((y, x + 1));
+        for &r in new_remaining {
+            remaining.push_back(r);
         }
-        done.push((y, x));
     }
 
-    // quick fix
-    done.iter()
-        .fold(HashSet::new(), |mut acc, curr| {
-            acc.insert(curr);
-            acc
-        })
-        .len() as i32
+    visited.len()
 }
 
 fn main() {
     let input = parse_input();
 
-    let mut lowest_point_values = vec![];
-    let mut lowest_points = vec![];
-    for (y, row) in input.iter().enumerate() {
-        for (x, cell) in row.iter().enumerate() {
-            if (y == 0 || cell < &input[y - 1][x])
-                && (y == input.len() - 1 || cell < &input[y + 1][x])
-                && (x == 0 || cell < &input[y][x - 1])
-                && (x == row.len() - 1 || cell < &input[y][x + 1])
-            {
-                lowest_point_values.push(*cell);
-                lowest_points.push((y, x));
-            }
-        }
-    }
-    let answer1: i32 = lowest_point_values.iter().sum::<i32>() + lowest_point_values.len() as i32;
+    let lowest_points = input
+        .iter()
+        .filter(|(&(x, y), &height)| {
+            [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)]
+                .iter()
+                .filter_map(|p| input.get(p))
+                .all(|d_height| height < *d_height)
+        })
+        .collect::<Vec<_>>();
+
+    let answer1: u32 = lowest_points.iter().map(|(_, height)| *height + 1).sum();
+
     println!("{}", answer1);
 
     let mut basin_sizes = lowest_points
         .iter()
-        .map(|v| get_basin_size(&input, *v))
-        .collect::<Vec<i32>>();
-    basin_sizes.sort_by(|a, b| b.cmp(a));
+        .map(|(&point, _)| basin_size(&input, point))
+        .collect::<Vec<_>>();
+    basin_sizes.sort();
 
-    let answer2 = &basin_sizes[..3].iter().product::<i32>();
+    let answer2: usize = basin_sizes.iter().rev().take(3).product();
 
-    println!("{:?}", answer2);
+    println!("{}", answer2);
 }

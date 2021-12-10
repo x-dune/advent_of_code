@@ -1,77 +1,49 @@
 use aoc2021::util;
 
-fn get_illegal_character(line: &str) -> Option<char> {
+const CHUNK_PAIRS: [(char, char); 4] = [('(', ')'), ('[', ']'), ('{', '}'), ('<', '>')];
+const CHUNK_OPENERS: [char; 4] = ['(', '[', '{', '<'];
+
+enum SyntaxErrorType {
+    IllegalCharacter(char),
+    IncompleteLine(Vec<char>),
+}
+
+fn syntax_error_type(line: &str) -> SyntaxErrorType {
     let mut stack = vec![];
 
-    let chunk_chars = [('(', ')'), ('[', ']'), ('{', '}'), ('<', '>')];
-    let chunk_openers = chunk_chars.map(|x| x.0);
-
     for c in line.chars() {
-        if stack.is_empty() || chunk_openers.contains(&c) {
+        if stack.is_empty() || CHUNK_OPENERS.contains(&c) {
             stack.push(c);
         } else {
             let opener = stack.pop().unwrap();
 
-            if !chunk_chars.contains(&(opener, c)) {
-                return Some(c);
+            if !CHUNK_PAIRS.contains(&(opener, c)) {
+                return SyntaxErrorType::IllegalCharacter(c);
             }
         }
     }
 
-    return None;
-}
-
-fn complete_lines(line: &str) -> String {
-    let mut stack = vec![];
-
-    let chunk_chars = [('(', ')'), ('[', ']'), ('{', '}'), ('<', '>')];
-    let chunk_openers = chunk_chars.map(|x| x.0);
-
-    for c in line.chars() {
-        if stack.is_empty() || chunk_openers.contains(&c) {
-            stack.push(c);
-        } else {
-            let opener = stack.pop().unwrap();
-
-            if !chunk_chars.contains(&(opener, c)) {
-                panic!();
-            }
-        }
-    }
-
-    return stack
-        .iter()
-        .rev()
-        .map(|x| match x {
-            '(' => ')',
-            '[' => ']',
-            '{' => '}',
-            '<' => '>',
-            _ => panic!(),
-        })
-        .collect();
-}
-
-fn score_completion_string(s: &str) -> i64 {
-    s.chars().fold(0, |acc, curr| {
-        let next = acc * 5;
-        let to_add = match curr {
-            ')' => 1,
-            ']' => 2,
-            '}' => 3,
-            '>' => 4,
-            _ => panic!(),
-        };
-        next + to_add
-    })
+    let reversed = stack.into_iter().rev().collect();
+    return SyntaxErrorType::IncompleteLine(reversed);
 }
 
 fn main() {
     let input = util::input_as_lines(include_str!("input.txt"));
 
-    let answer1: i32 = input
+    let (illegal_chars, incommplete_lines) =
+        input
+            .iter()
+            .map(|line| syntax_error_type(line))
+            .fold((vec![], vec![]), |mut acc, curr| {
+                match curr {
+                    SyntaxErrorType::IllegalCharacter(c) => acc.0.push(c),
+                    SyntaxErrorType::IncompleteLine(chars) => acc.1.push(chars),
+                }
+                acc
+            });
+
+    let answer1: i32 = illegal_chars
         .iter()
-        .filter_map(|line| get_illegal_character(line))
         .map(|x| match x {
             ')' => 3,
             ']' => 57,
@@ -80,18 +52,25 @@ fn main() {
             _ => panic!(),
         })
         .sum();
-
     println!("{}", answer1);
 
-    let mut scores = input
+    let mut part2_scores = incommplete_lines
         .iter()
-        .filter(|line| get_illegal_character(line).is_none())
-        .map(|line| complete_lines(line))
-        .map(|s| score_completion_string(&s))
+        .map(|chars| {
+            chars.iter().fold(0i64, |acc, curr| {
+                acc * 5
+                    + match curr {
+                        '(' => 1,
+                        '[' => 2,
+                        '{' => 3,
+                        '<' => 4,
+                        _ => panic!(),
+                    }
+            })
+        })
         .collect::<Vec<_>>();
-    scores.sort();
+    part2_scores.sort();
+    let answer2 = part2_scores[part2_scores.len() / 2];
 
-    let answer2 = scores[scores.len() / 2];
-
-    println!("{:?}", answer2);
+    println!("{}", answer2);
 }

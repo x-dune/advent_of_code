@@ -30,7 +30,7 @@ fn syntax_error_type(line: &str) -> SyntaxErrorType {
 fn main() {
     let input = util::input_as_lines(include_str!("input.txt"));
 
-    let (illegal_chars, incommplete_lines) =
+    let (illegal_chars, incomplete_lines) =
         input
             .iter()
             .map(|line| syntax_error_type(line))
@@ -54,7 +54,7 @@ fn main() {
         .sum();
     println!("{}", answer1);
 
-    let mut part2_scores = incommplete_lines
+    let mut part2_scores = incomplete_lines
         .iter()
         .map(|chars| {
             chars.iter().fold(0i64, |acc, curr| {

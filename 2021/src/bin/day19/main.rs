@@ -22,7 +22,7 @@ fn parse_input() -> Vec<Vec<Vec3>> {
 }
 
 fn has_match(resolved_beacons: &HashSet<Vec3>, beacons: &Vec<Vec3>) -> Option<Vec3> {
-    let manhattan = resolved_beacons
+    let translation = resolved_beacons
         .iter()
         .flat_map(|pos1| {
             beacons
@@ -34,10 +34,7 @@ fn has_match(resolved_beacons: &HashSet<Vec3>, beacons: &Vec<Vec3>) -> Option<Ve
             acc
         });
 
-    let mut sorted = manhattan.iter().collect::<Vec<_>>();
-    sorted.sort_by_key(|(_, d)| *d);
-    sorted.reverse();
-    sorted.iter().find(|(_, &v)| v >= 12).map(|(&k, _)| k)
+    translation.iter().find(|(_, &v)| v >= 12).map(|(&k, _)| k)
 }
 
 fn resolve_scanners(scanners: &Vec<Vec<Vec3>>) -> (HashSet<Vec3>, Vec<Vec3>) {

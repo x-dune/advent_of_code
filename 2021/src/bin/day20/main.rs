@@ -11,9 +11,9 @@ fn output_pixel(
     x: i32,
     lit_by_default: bool,
 ) -> u8 {
-    let default_pixel = if lit_by_default { b'#' } else { b'.' };
+    let default_pixel = if lit_by_default { 1 } else { 0 };
 
-    let binary_str = [
+    let index = [
         (y - 1, x - 1),
         (y - 1, x),
         (y - 1, x + 1),
@@ -29,12 +29,9 @@ fn output_pixel(
         return input_image
             .get(iy as usize)
             .and_then(|row| row.get(ix as usize))
-            .unwrap_or(&default_pixel);
+            .map_or(default_pixel, |&c| (c == b'#') as usize);
     })
-    .map(|&c| if c == b'#' { '1' } else { '0' })
-    .collect::<String>();
-
-    let index = usize::from_str_radix(&binary_str, 2).unwrap();
+    .fold(0, |a, b| a << 1 | b);
 
     enhancer[index]
 }

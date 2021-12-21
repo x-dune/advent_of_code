@@ -35,11 +35,14 @@ fn solution2(start_positions: [i64; 2]) -> i64 {
     let mut universes = BTreeMap::from([([start_positions[0], start_positions[1], 0, 0], 1i64)]);
     let mut universes_won = [0, 0];
 
-    let quantum_rolls = (1..=3)
+    let quantum_rolls_count = (1..=3)
         .flat_map(|roll1| {
             (1..=3).flat_map(move |roll2| (1..=3).map(move |roll3| (roll1 + roll2 + roll3)))
         })
-        .collect::<Vec<_>>();
+        .fold(BTreeMap::new(), |mut acc, curr| {
+            *acc.entry(curr).or_insert(0) += 1;
+            acc
+        });
 
     while !universes.is_empty() {
         for i in 0..2 {
@@ -49,17 +52,22 @@ fn solution2(start_positions: [i64; 2]) -> i64 {
             for (universe, count) in &universes {
                 let pos = universe[player_index];
                 let score = universe[player_index + 2];
-                for next_pos in quantum_rolls.iter().map(|roll| cycle(10, pos + roll)) {
+
+                let quantum_rolled_pos = quantum_rolls_count
+                    .iter()
+                    .map(|(roll, roll_count)| (cycle(10, pos + roll), *roll_count));
+
+                for (next_pos, roll_count) in quantum_rolled_pos {
                     let next_score = score + next_pos;
 
                     if next_score >= 21 {
-                        universes_won[player_index] += count;
+                        universes_won[player_index] += count * roll_count;
                     } else {
                         let mut next_universe = universe.clone();
                         next_universe[player_index] = next_pos;
                         next_universe[player_index + 2] = next_score;
 
-                        *next.entry(next_universe).or_insert(0) += count;
+                        *next.entry(next_universe).or_insert(0) += count * roll_count;
                     }
                 }
             }

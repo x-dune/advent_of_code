@@ -1,6 +1,6 @@
-fn step(grid: &Vec<Vec<char>>) -> (Vec<Vec<char>>, bool) {
+fn step(grid: &[Vec<char>]) -> (Vec<Vec<char>>, bool) {
     let mut did_move = false;
-    let mut grid = grid.clone();
+    let mut grid = grid.to_owned();
     let mut next_grid = vec![vec!['.'; grid[0].len()]; grid.len()];
     for (y, row) in grid.iter().enumerate() {
         for (x, &col) in row.iter().enumerate() {

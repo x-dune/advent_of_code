@@ -8,7 +8,7 @@ fn parse_input(part2: bool) -> Grid {
     let mut lines = include_str!("input.txt")
         .lines()
         .map(|s| {
-            let padded = format!("{:#<13}", s).replace(" ", "#");
+            let padded = format!("{:#<13}", s).replace(' ', "#");
             return padded[1..padded.len() - 1].chars().collect();
         })
         .collect::<Vec<_>>();
@@ -58,18 +58,18 @@ fn hallway_to_home(amp: char, x: usize, grid: &Grid) -> Option<(usize, usize)> {
     if !is_home_open {
         return None;
     }
-    if !is_path_clear(x, dest_x, &grid) {
+    if !is_path_clear(x, dest_x, grid) {
         return None;
     }
 
     let mut dest_y = 1;
-    for dy in 2..grid.len() {
+    for (dy, _) in grid.iter().enumerate().skip(2) {
         if grid[dy][dest_x] == '.' {
             dest_y = dy;
         }
     }
 
-    return Some((dest_x, dest_y));
+    Some((dest_x, dest_y))
 }
 
 fn home_to_hallway_moves(x: usize, y: usize, grid: &Grid) -> Vec<(usize, usize)> {
@@ -78,7 +78,7 @@ fn home_to_hallway_moves(x: usize, y: usize, grid: &Grid) -> Vec<(usize, usize)>
     }
     let mut moves = vec![];
     for dx in 0..HALLWAY_LEN {
-        if !DEST_LOCATION.contains(&dx) && grid[0][dx] == '.' && is_path_clear(x, dx, &grid) {
+        if !DEST_LOCATION.contains(&dx) && grid[0][dx] == '.' && is_path_clear(x, dx, grid) {
             moves.push((dx, 0));
         }
     }
@@ -140,7 +140,7 @@ fn solve(grid: Grid) -> i32 {
             }
         });
     }
-    done_costs.sort();
+    done_costs.sort_unstable();
     done_costs[0]
 }
 

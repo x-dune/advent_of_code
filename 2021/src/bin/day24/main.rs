@@ -22,7 +22,7 @@ fn to_14_digit_place(num: i64, place: u32) -> i64 {
     num * 10i64.pow(13 - place)
 }
 
-fn highest_lowest_monad(pair: &Vec<(usize, usize, i64)>) -> (i64, i64) {
+fn highest_lowest_monad(pair: &[(usize, usize, i64)]) -> (i64, i64) {
     let mut highest_monad = 0;
     let mut lowest_monad = 0;
 

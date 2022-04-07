@@ -10,27 +10,20 @@ impl SNumber {
     fn new_pair(left: SNumber, right: SNumber) -> SNumber {
         SNumber::Pair(Box::new(left), Box::new(right))
     }
-
-    // fn to_string(&self) -> String {
-    //     match self {
-    //         SNumber::Pair(a, b) => return format!("[{},{}]", a.to_string(), b.to_string()),
-    //         SNumber::Val(a) => return a.to_string(),
-    //     }
-    // }
 }
 
 fn parse(s: &str) -> (SNumber, &str) {
-    let current = s.chars().nth(0).unwrap();
+    let current = s.chars().next().unwrap();
     if current == '[' {
         let (left, rest_left) = parse(&s[1..]);
         let (right, rest_right) = parse(&rest_left[1..]);
-        return (
+        (
             SNumber::Pair(Box::new(left), Box::new(right)),
             &rest_right[1..],
-        );
+        )
     } else {
         let n = current.to_digit(10).unwrap() as i32;
-        return (SNumber::Val(n), &s[1..]);
+        (SNumber::Val(n), &s[1..])
     }
 }
 
@@ -118,18 +111,16 @@ fn try_split(snum: &SNumber) -> (bool, SNumber) {
 
 fn magnitude(snum: &SNumber) -> i32 {
     match snum {
-        SNumber::Val(a) => return *a,
-        SNumber::Pair(l, r) => {
-            return 3 * magnitude(l) + 2 * magnitude(r);
-        }
+        SNumber::Val(a) => *a,
+        SNumber::Pair(l, r) => 3 * magnitude(l) + 2 * magnitude(r),
     }
 }
 
-fn calculate_magnitude(snums: &Vec<SNumber>) -> i32 {
+fn calculate_magnitude(snums: &[SNumber]) -> i32 {
     let mut snum = snums[0].clone();
 
-    for i in 1..snums.len() {
-        snum = SNumber::new_pair(snum, snums[i].clone());
+    for item in snums.iter().skip(1) {
+        snum = SNumber::new_pair(snum, item.clone());
 
         loop {
             let (exploded, next_snum, _, _) = try_explode(&snum, 0);
@@ -150,7 +141,7 @@ fn calculate_magnitude(snums: &Vec<SNumber>) -> i32 {
         }
     }
 
-    return magnitude(&snum);
+    magnitude(&snum)
 }
 
 fn main() {
@@ -175,7 +166,7 @@ fn main() {
         })
         .collect::<HashSet<_>>();
     for (n1, n2) in permutations {
-        let magnitude = calculate_magnitude(&vec![input[n1].clone(), input[n2].clone()]);
+        let magnitude = calculate_magnitude(&[input[n1].clone(), input[n2].clone()]);
 
         if magnitude > answer2 {
             answer2 = magnitude;

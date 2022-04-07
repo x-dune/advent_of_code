@@ -41,7 +41,7 @@ fn dijkstra(grid: &BTreeMap<(i32, i32), i32>) -> i32 {
 
 fn main() {
     let input = include_str!("input.txt");
-    let grid_horizontal_size = input.lines().nth(0).unwrap().len() as i32;
+    let grid_horizontal_size = input.lines().next().unwrap().len() as i32;
     let grid_vertical_size = input.lines().count() as i32;
     let grid = input
         .lines()
@@ -81,7 +81,7 @@ fn main() {
         })
         .collect::<BTreeMap<_, _>>();
 
-    let answer2 = dijkstra(&expanded_grid);
+    let answer2 = dijkstra(expanded_grid);
 
     println!("{}", answer2);
 }

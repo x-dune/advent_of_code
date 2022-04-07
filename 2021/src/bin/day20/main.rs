@@ -5,8 +5,8 @@ fn parse_input() -> (Vec<u8>, Vec<Vec<u8>>) {
 }
 
 fn output_pixel(
-    input_image: &Vec<Vec<u8>>,
-    enhancer: &Vec<u8>,
+    input_image: &[Vec<u8>],
+    enhancer: &[u8],
     y: i32,
     x: i32,
     lit_by_default: bool,
@@ -36,7 +36,7 @@ fn output_pixel(
     enhancer[index]
 }
 
-fn enhance(input_image: &Vec<Vec<u8>>, enhancer: &Vec<u8>, lit_by_default: bool) -> Vec<Vec<u8>> {
+fn enhance(input_image: &[Vec<u8>], enhancer: &[u8], lit_by_default: bool) -> Vec<Vec<u8>> {
     // we pad to account for the image growing by 2 in x and y direction per iteration
     // technically image has an infinite size
     // but only +2 in x and y direction is significant in step
@@ -44,8 +44,8 @@ fn enhance(input_image: &Vec<Vec<u8>>, enhancer: &Vec<u8>, lit_by_default: bool)
     for y in 0..output_image.len() {
         for x in 0..output_image[0].len() {
             output_image[y][x] = output_pixel(
-                &input_image,
-                &enhancer,
+                input_image,
+                enhancer,
                 // account for padding by normalizing x andy index
                 (y as i32) - 1,
                 (x as i32) - 1,
@@ -62,11 +62,7 @@ fn main() {
     // the input may "blink", meaning:
     // on even iterations the infinite image is filled with # by default and
     // on odd iterations the infinite image is filled with . by default
-    let will_blink = if enhancer[0] == b'#' && *enhancer.last().unwrap() == b'.' {
-        true
-    } else {
-        false
-    };
+    let will_blink = enhancer[0] == b'#' && *enhancer.last().unwrap() == b'.';
 
     for i in 1..=50 {
         image = enhance(&image, &enhancer, will_blink && i % 2 == 0);

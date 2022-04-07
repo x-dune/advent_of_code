@@ -32,7 +32,7 @@ fn solution1() -> i32 {
         i += 1;
     }
 
-    return horizontal * depth;
+    horizontal * depth
 }
 
 fn solution2() -> i32 {
@@ -56,7 +56,7 @@ fn solution2() -> i32 {
         i += 1;
     }
 
-    return horizontal * depth;
+    horizontal * depth
 }
 
 fn main() {

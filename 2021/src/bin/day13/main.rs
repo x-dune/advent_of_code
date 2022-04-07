@@ -25,7 +25,7 @@ fn format_paper(paper: &HashSet<(i32, i32)>) -> String {
                 output.push_str("  ")
             }
         }
-        output.push_str("\n")
+        output.push('\n')
     }
 
     output
@@ -37,7 +37,7 @@ fn main() {
     let mut paper = dots
         .lines()
         .map(|line| {
-            let (x, y) = line.split_once(",").unwrap();
+            let (x, y) = line.split_once(',').unwrap();
             (x.parse::<i32>().unwrap(), y.parse::<i32>().unwrap())
         })
         .collect();
@@ -45,7 +45,7 @@ fn main() {
     let instructions = instructions_raw
         .lines()
         .map(|s| {
-            let (axis, n) = &s[11..].split_once("=").unwrap();
+            let (axis, n) = &s[11..].split_once('=').unwrap();
             (*axis, n.parse::<i32>().unwrap())
         })
         .collect::<Vec<_>>();

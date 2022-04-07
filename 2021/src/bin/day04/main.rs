@@ -9,7 +9,7 @@ fn get_drawn_numbers() -> Vec<i32> {
     let input = util::input_as_string(include_str!("input.txt"));
     let input_splitted = input.split("\n\n").collect::<Vec<&str>>();
     let drawn_numbers = input_splitted[0]
-        .split(",")
+        .split(',')
         .map(|x| x.parse::<i32>().unwrap())
         .collect::<Vec<i32>>();
 
@@ -22,7 +22,7 @@ fn get_boards() -> Boards {
         .split("\n\n")
         .skip(1)
         .map(|a| {
-            a.split("\n")
+            a.split('\n')
                 .map(|b| {
                     b.split_whitespace()
                         .map(|z| z.parse::<i32>().unwrap())
@@ -48,7 +48,7 @@ fn is_board_a_winner(board: &Board) -> bool {
             return true;
         }
     }
-    return false;
+    false
 }
 
 fn mark_board(board: &mut Board, number: i32) {
@@ -79,12 +79,12 @@ fn solution1() -> i32 {
     for number in drawn_numbers {
         for board in boards.iter_mut() {
             mark_board(board, number);
-            if is_board_a_winner(&board) {
-                return sum_board(&board) * number;
+            if is_board_a_winner(board) {
+                return sum_board(board) * number;
             }
         }
     }
-    return 0;
+    0
 }
 
 fn solution2() -> i32 {
@@ -97,16 +97,16 @@ fn solution2() -> i32 {
         for (i, board) in boards.iter_mut().enumerate() {
             if !winner_indexes.contains(&i) {
                 mark_board(board, number);
-                if is_board_a_winner(&board) {
+                if is_board_a_winner(board) {
                     winner_indexes.push(i);
                     if boards_length == winner_indexes.len() {
-                        return sum_board(&board) * number;
+                        return sum_board(board) * number;
                     }
                 }
             }
         }
     }
-    return 0;
+    0
 }
 
 fn main() {

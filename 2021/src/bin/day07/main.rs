@@ -8,7 +8,7 @@ fn triangle_sum(n: i32) -> i32 {
 
 fn main() {
     let mut input = util::input_as_ints_from_list(include_str!("input.txt"));
-    input.sort();
+    input.sort_unstable();
 
     let min = input.iter().min().unwrap();
     let max = input.iter().max().unwrap();

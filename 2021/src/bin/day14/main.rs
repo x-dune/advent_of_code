@@ -64,7 +64,7 @@ fn main() {
         })
         .collect::<HashMap<(char, char), char>>();
 
-    let mut pair_count = polymer_pair_count(&polymer_template);
+    let mut pair_count = polymer_pair_count(polymer_template);
     for i in 1..=40 {
         pair_count = next_polymer_pair_count(&pair_count, &rules);
         if i == 10 {

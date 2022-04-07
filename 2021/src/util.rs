@@ -1,15 +1,15 @@
 pub fn input_as_string(input: &str) -> &str {
-    return input.trim();
+    input.trim()
 }
 
 pub fn input_as_lines(input: &str) -> Vec<&str> {
-    return input.trim().split("\n").collect();
+    return input.trim().split('\n').collect();
 }
 
 pub fn input_as_ints_from_lines(input: &str) -> Vec<i32> {
     return input
         .trim()
-        .split("\n")
+        .split('\n')
         .map(|x| x.parse().unwrap())
         .collect();
 }

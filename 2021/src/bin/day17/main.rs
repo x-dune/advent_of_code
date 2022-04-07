@@ -52,7 +52,7 @@ fn main() {
         .collect::<Vec<_>>();
 
     let answer1 = max_heights.iter().max().unwrap();
-    let answer2 = max_heights.iter().count();
+    let answer2 = max_heights.len();
 
     println!("{}\n{}", answer1, answer2);
 }

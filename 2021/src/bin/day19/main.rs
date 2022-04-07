@@ -21,7 +21,7 @@ fn parse_input() -> Vec<Vec<Vec3>> {
         .collect::<Vec<_>>()
 }
 
-fn has_match(resolved_beacons: &HashSet<Vec3>, beacons: &Vec<Vec3>) -> Option<Vec3> {
+fn has_match(resolved_beacons: &HashSet<Vec3>, beacons: &[Vec3]) -> Option<Vec3> {
     let translation = resolved_beacons
         .iter()
         .flat_map(|pos1| {
@@ -37,16 +37,16 @@ fn has_match(resolved_beacons: &HashSet<Vec3>, beacons: &Vec<Vec3>) -> Option<Ve
     translation.iter().find(|(_, &v)| v >= 12).map(|(&k, _)| k)
 }
 
-fn resolve_scanners(scanners: &Vec<Vec<Vec3>>) -> (HashSet<Vec3>, Vec<Vec3>) {
+fn resolve_scanners(scanners: &[Vec<Vec3>]) -> (HashSet<Vec3>, Vec<Vec3>) {
     let mut resolved_beacons = scanners[0].iter().fold(HashSet::new(), |mut acc, curr| {
         acc.insert(*curr);
         acc
     });
     let mut resolved_scanners = vec![(0, 0, 0)];
-    let mut rest = scanners.clone();
+    let mut rest = scanners.to_owned();
     rest.remove(0);
 
-    while rest.len() > 0 {
+    while !rest.is_empty() {
         let mut to_remove = None;
         'outer: for (i, scanner) in rest.iter().enumerate() {
             for rotated_scanner in get_all_rotations(scanner) {
@@ -77,7 +77,7 @@ fn resolve_scanners(scanners: &Vec<Vec<Vec3>>) -> (HashSet<Vec3>, Vec<Vec3>) {
 
 static ROTATION_ANGLE: [u32; 4] = [90, 180, 270, 360];
 
-fn get_all_rotations(pos: &Vec<Vec3>) -> Vec<Vec<Vec3>> {
+fn get_all_rotations(pos: &[Vec3]) -> Vec<Vec<Vec3>> {
     let all_rotations = ROTATION_ANGLE
         .iter()
         .flat_map(|x| {
@@ -172,7 +172,7 @@ fn main() {
         .flat_map(|a| {
             resolved_scanners.iter().filter_map(move |b| {
                 if a == b {
-                    return None;
+                    None
                 } else {
                     Some((a.0 - b.0).abs() + (a.1 - b.1).abs() + (a.2 - b.2).abs())
                 }

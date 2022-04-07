@@ -28,11 +28,11 @@ fn solution1() -> i32 {
     for count_of_1_bit in count_of_1_bit {
         let is_1_most_common = count_of_1_bit as f64 > input.len() as f64 / 2.0;
         if is_1_most_common {
-            gamma_binary.push_str("1");
-            epsilon_binary.push_str("0");
+            gamma_binary.push('1');
+            epsilon_binary.push('0');
         } else {
-            gamma_binary.push_str("0");
-            epsilon_binary.push_str("1");
+            gamma_binary.push('0');
+            epsilon_binary.push('1');
         }
     }
 

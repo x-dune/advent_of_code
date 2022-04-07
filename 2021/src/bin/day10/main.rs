@@ -24,7 +24,7 @@ fn syntax_error_type(line: &str) -> SyntaxErrorType {
     }
 
     let reversed = stack.into_iter().rev().collect();
-    return SyntaxErrorType::IncompleteLine(reversed);
+    SyntaxErrorType::IncompleteLine(reversed)
 }
 
 fn main() {
@@ -69,7 +69,7 @@ fn main() {
             })
         })
         .collect::<Vec<_>>();
-    part2_scores.sort();
+    part2_scores.sort_unstable();
     let answer2 = part2_scores[part2_scores.len() / 2];
 
     println!("{}", answer2);

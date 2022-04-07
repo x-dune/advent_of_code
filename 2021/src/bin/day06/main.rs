@@ -2,7 +2,7 @@ use std::collections::HashMap;
 
 use aoc2021::util;
 
-fn solve(input: &Vec<i32>, number_of_days: i32) -> i64 {
+fn solve(input: &[i32], number_of_days: i32) -> i64 {
     let mut fish_to_days_left = HashMap::new();
 
     for days_left in input {
@@ -31,12 +31,12 @@ fn solve(input: &Vec<i32>, number_of_days: i32) -> i64 {
 
 fn solution1() -> i64 {
     let input = util::input_as_ints_from_list(include_str!("input.txt"));
-    return solve(&input, 80);
+    solve(&input, 80)
 }
 
 fn solution2() -> i64 {
     let input = util::input_as_ints_from_list(include_str!("input.txt"));
-    return solve(&input, 256);
+    solve(&input, 256)
 }
 
 fn main() {

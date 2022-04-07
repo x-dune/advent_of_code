@@ -54,7 +54,7 @@ fn parse_input() -> Vec<(Vec<String>, Vec<String>)> {
         .collect::<Vec<(Vec<String>, Vec<String>)>>()
 }
 
-fn find_seq(patterns: &Vec<String>, length: usize) -> Vec<char> {
+fn find_seq(patterns: &[String], length: usize) -> Vec<char> {
     patterns
         .iter()
         .find(|x| x.len() == length)
@@ -69,15 +69,15 @@ fn get_translation(pattern: &str, cypher_map: &HashMap<char, char>) -> String {
         output.push(cypher_map[&i]);
     }
 
-    output.sort();
+    output.sort_unstable();
     output.iter().collect()
 }
 
 fn decode_output(tranlation_map: &HashMap<String, String>, pattern: &str) -> String {
     let mut vec = pattern.chars().collect::<Vec<char>>();
-    vec.sort();
+    vec.sort_unstable();
     let normalized = vec.iter().collect::<String>();
-    return tranlation_map[&normalized].to_owned();
+    tranlation_map[&normalized].to_owned()
 }
 
 fn main() {
@@ -99,10 +99,10 @@ fn main() {
     for (patterns, output) in &input {
         let mut cypher_map: HashMap<char, char> = HashMap::new();
 
-        let seq_1 = find_seq(&patterns, 2);
-        let seq_4 = find_seq(&patterns, 4);
-        let seq_7 = find_seq(&patterns, 3);
-        let seq_8 = find_seq(&patterns, 7);
+        let seq_1 = find_seq(patterns, 2);
+        let seq_4 = find_seq(patterns, 4);
+        let seq_7 = find_seq(patterns, 3);
+        let seq_8 = find_seq(patterns, 7);
 
         let count: HashMap<char, i32> = patterns.iter().fold(HashMap::new(), |mut acc, curr| {
             for char in curr.chars() {

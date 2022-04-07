@@ -46,12 +46,12 @@ fn solution1() -> usize {
         .filter(|(x1, y1, x2, y2)| x1 == x2 || y1 == y2)
         .collect();
 
-    return get_overlapping_amount(input_without_diagonals);
+    get_overlapping_amount(input_without_diagonals)
 }
 
 fn solution2() -> usize {
     let input = parse_input();
-    return get_overlapping_amount(input);
+    get_overlapping_amount(input)
 }
 
 fn main() {

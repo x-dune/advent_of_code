@@ -21,7 +21,7 @@ fn basin_size(input: &BTreeMap<(i32, i32), u32>, lowest_point: (i32, i32)) -> us
     let mut visited = HashSet::new();
     let mut remaining = VecDeque::from([lowest_point]);
 
-    while remaining.len() > 0 {
+    while !remaining.is_empty() {
         let current @ (x, y) = remaining.pop_front().unwrap();
 
         if !visited.insert(current) {
@@ -29,14 +29,14 @@ fn basin_size(input: &BTreeMap<(i32, i32), u32>, lowest_point: (i32, i32)) -> us
         }
 
         let neighbours = [(x + 1, y), (x - 1, y), (x, y + 1), (x, y - 1)];
-        let new_remaining = neighbours.iter().filter_map(|p| {
+        let new_remaining = neighbours.iter().filter(|p| {
             if let Some(&height) = input.get(p) {
                 if !visited.contains(p) && height != 9 {
-                    return Some(p);
+                    return true;
                 }
             }
 
-            return None;
+            false
         });
 
         for &r in new_remaining {
@@ -68,7 +68,7 @@ fn main() {
         .iter()
         .map(|(&point, _)| basin_size(&input, point))
         .collect::<Vec<_>>();
-    basin_sizes.sort();
+    basin_sizes.sort_unstable();
 
     let answer2: usize = basin_sizes.iter().rev().take(3).product();
 

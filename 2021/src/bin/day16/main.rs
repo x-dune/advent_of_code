@@ -7,7 +7,7 @@ fn parse_literal(bin: &str) -> (u64, &str) {
         let current = &bin[(5 * i)..(5 * (i + 1))];
 
         parsed_bin.push_str(&current[1..]);
-        if current.starts_with("0") {
+        if current.starts_with('0') {
             let value = u64::from_str_radix(&parsed_bin, 2).unwrap();
             let leftover = &bin[(5 * (i + 1))..];
             return (value, leftover);
@@ -36,7 +36,7 @@ fn parse(bin: &str) -> (u64, u64, &str) {
     if type_id == 4 {
         // literal value
         let (value, leftover) = parse_literal(&bin[6..]);
-        return (version, value, leftover);
+        (version, value, leftover)
     } else {
         // operator packet
         let i = bin.chars().nth(6).unwrap().to_digit(2).unwrap();
@@ -48,7 +48,7 @@ fn parse(bin: &str) -> (u64, u64, &str) {
             let mut subp_values = vec![];
             let mut remainder = &bin[22..22 + l];
 
-            while remainder != "" {
+            while !remainder.is_empty() {
                 let (next_subp_version_sum, next_subp_value, next_remainder) = parse(remainder);
 
                 subp_version_sum += next_subp_version_sum;

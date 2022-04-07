@@ -1,7 +1,7 @@
 use std::collections::BTreeMap;
 
 fn parse_input() -> [i64; 2] {
-    let (player1, player2) = include_str!("input.txt").trim().split_once("\n").unwrap();
+    let (player1, player2) = include_str!("input.txt").trim().split_once('\n').unwrap();
     [player1, player2].map(|a| a.split_once(": ").unwrap().1.parse::<i64>().unwrap())
 }
 
@@ -20,7 +20,7 @@ fn solution1(start_positions: [i64; 2]) -> i64 {
         let to_move: i64 = rolls.iter().sum();
 
         positions[player_index] = cycle(10, positions[player_index] + to_move);
-        scores[player_index] = scores[player_index] + positions[player_index];
+        scores[player_index] += positions[player_index];
         prev_roll = *rolls.last().unwrap();
 
         if scores.iter().any(|&a| a >= 1000) {
@@ -63,7 +63,7 @@ fn solution2(start_positions: [i64; 2]) -> i64 {
                     if next_score >= 21 {
                         universes_won[player_index] += count * roll_count;
                     } else {
-                        let mut next_universe = universe.clone();
+                        let mut next_universe = *universe;
                         next_universe[player_index] = next_pos;
                         next_universe[player_index + 2] = next_score;
 

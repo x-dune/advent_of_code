@@ -11,7 +11,7 @@ fn solution1() -> i32 {
         }
         i += 1;
     }
-    return counter;
+    counter
 }
 
 fn solution2() -> i32 {
@@ -29,7 +29,7 @@ fn solution2() -> i32 {
         }
         i += 1;
     }
-    return counter;
+    counter
 }
 
 fn main() {

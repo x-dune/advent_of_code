@@ -18,7 +18,7 @@ fn step(grid_map: GridMap) -> (GridMap, usize) {
         .collect::<GridMap>();
     let mut flashed = HashSet::new();
 
-    while q.len() > 0 {
+    while !q.is_empty() {
         let current @ (x, y) = q.pop_front().unwrap();
         if !flashed.insert(current) {
             continue;

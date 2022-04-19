@@ -35,3 +35,13 @@ fn solution2() -> i32 {
 fn main() {
     println!("{} {}", solution1(), solution2())
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_solution1() {
+        assert_eq!(solution1(), 1754);
+    }
+}

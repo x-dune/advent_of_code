@@ -1,0 +1,7 @@
+# compiled executable
+*
+!/**/
+!*.*
+*.exe
+
+day*/test_input.txt

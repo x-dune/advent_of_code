@@ -5,7 +5,7 @@ fn parse_input() -> (RangeInclusive<i32>, RangeInclusive<i32>) {
     let ranges = x_y
         .split(", ")
         .map(|s| {
-            let range = (&s[2..])
+            let range = s[2..]
                 .split("..")
                 .map(|r| r.parse::<i32>().unwrap())
                 .collect::<Vec<_>>();

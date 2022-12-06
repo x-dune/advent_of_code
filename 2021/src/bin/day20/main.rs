@@ -11,7 +11,7 @@ fn output_pixel(
     x: i32,
     lit_by_default: bool,
 ) -> u8 {
-    let default_pixel = if lit_by_default { 1 } else { 0 };
+    let default_pixel = usize::from(lit_by_default);
 
     let index = [
         (y - 1, x - 1),

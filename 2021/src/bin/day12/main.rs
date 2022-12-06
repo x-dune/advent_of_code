@@ -33,12 +33,12 @@ fn get_paths<'a>(
 }
 
 fn main() {
-    let graph = include_str!("input.txt")
+    let graph: HashMap<&str, Vec<&str>> = include_str!("input.txt")
         .lines()
         .map(|s| s.split_once('-').unwrap())
         .fold(HashMap::new(), |mut acc, (a, b)| {
-            acc.entry(a).or_insert(Vec::new()).push(b);
-            acc.entry(b).or_insert(Vec::new()).push(a);
+            acc.entry(a).or_default().push(b);
+            acc.entry(b).or_default().push(a);
             acc
         });
 

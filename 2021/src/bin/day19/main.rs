@@ -87,13 +87,13 @@ fn get_all_rotations(pos: &[Vec3]) -> Vec<Vec<Vec3>> {
         })
         .collect::<HashSet<_>>();
 
-    let mut rotated_scanners = HashMap::new();
+    let mut rotated_scanners: HashMap<(u32, u32, u32), Vec<Vec3>> = HashMap::new();
 
     for vec in pos {
         all_rotations.iter().for_each(|&angles| {
             rotated_scanners
                 .entry(angles)
-                .or_insert(vec![])
+                .or_default()
                 .push(rotate(*vec, angles))
         });
     }

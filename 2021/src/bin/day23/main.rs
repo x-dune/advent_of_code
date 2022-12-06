@@ -129,7 +129,7 @@ fn solve(grid: Grid) -> i32 {
             let next_cost = cost + move_cost;
 
             let current_cost = best.get(&next_grid);
-            if current_cost == None || next_cost < *current_cost.unwrap() {
+            if current_cost.is_none() || next_cost < *current_cost.unwrap() {
                 best.insert(next_grid.clone(), next_cost);
 
                 if is_done(&next_grid) {

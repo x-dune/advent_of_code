@@ -61,15 +61,9 @@ fn generate_rating(rating: Rating) -> String {
         }
 
         if should_filter_by_1_bit(count_of_1_bit as f64, input.len() as f64) {
-            input = input
-                .into_iter()
-                .filter(|x| x[bit_position] == '1')
-                .collect()
+            input.retain(|x| x[bit_position] == '1')
         } else {
-            input = input
-                .into_iter()
-                .filter(|x| x[bit_position] == '0')
-                .collect()
+            input.retain(|x| x[bit_position] == '0')
         }
         bit_position += 1;
     }

@@ -158,9 +158,9 @@ fn main() {
         .flat_map(|n1| {
             (0..input.len()).flat_map(move |n2| {
                 if n1 == n2 {
-                    return vec![];
+                    vec![]
                 } else {
-                    return vec![(n1, n2), (n2, n1)];
+                    vec![(n1, n2), (n2, n1)]
                 }
             })
         })

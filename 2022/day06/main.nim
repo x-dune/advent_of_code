@@ -1,7 +1,7 @@
 import std/os
 import std/strutils
 
-let input = readFile(currentSourcePath.parentDir & "/test_input.txt").strip
+let input = readFile(currentSourcePath.parentDir & "/input.txt").strip
 
 for i, _ in input:
   let chars = input[i..i+3]

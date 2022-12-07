@@ -8,9 +8,8 @@ let input = readFile(currentSourcePath.parentDir & "/input.txt")
   .strip
   .split("$ ")[1..^1]
 
-var sizes = initTable[string, int]()
+var dirSizes = initTable[string, int]()
 var totalUsedSize = 0
-
 var cwd: seq[string] = @[]
 for i, chunk in input:
   let parts = chunk.strip().split('\n')
@@ -30,19 +29,18 @@ for i, chunk in input:
     totalUsedSize += size
     for i in 0..len(cwd) - 1:
       let path = cwd[0..i].join("/")
-      if sizes.hasKey(path):
-        sizes[path] += size
+      if dirSizes.hasKey(path):
+        dirSizes[path] += size
       else:
-        sizes[path] = size
+        dirSizes[path] = size
 
 let sizeNeeded = 3_000_0000 - (7_000_0000 - totalUsedSize)
-
 var answer1 = 0
 var answer2 = totalUsedSize
-for v in sizes.values:
-  if v <= 100_000:
-    answer1 += v
-  if v >= sizeNeeded and v < answer2:
-    answer2 = v
+for size in dirSizes.values:
+  if size <= 100_000:
+    answer1 += size
+  if size >= sizeNeeded and size < answer2:
+    answer2 = size
 
 echo answer1, '\n', answer2

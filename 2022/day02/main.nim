@@ -1,8 +1,8 @@
 import std/os
 import std/sequtils
+import std/strutils
 import std/sugar
-import strutils
-import tables
+import std/tables
 
 let input = readFile(currentSourcePath.parentDir & "/input.txt")
   .strip

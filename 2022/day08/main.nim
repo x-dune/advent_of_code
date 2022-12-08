@@ -32,11 +32,11 @@ proc scenicScore(y: int, x: int, grid: seq[seq[int]]): int =
     left += 1
     if grid[y][x-1-i] >= current:
       break
-  for i in y+1..len(grid)-1:
+  for i in y+1..grid.high:
     down += 1
     if grid[i][x] >= current:
       break
-  for i in x+1..len(grid[0]) - 1:
+  for i in x+1..grid[0].high:
     right += 1
     if grid[y][i] >= current:
       break
@@ -48,7 +48,7 @@ var answer2 = 0
 for i, line in input:
   for j, _ in line:
     # part 1
-    if i == 0 or j == 0 or i == len(input) - 1 or j == len(line) - 1:
+    if i == 0 or j == 0 or i == input.high or j == line.high:
       answer1 += 1
     else:
       if isVisible(i, j, input):

@@ -46,7 +46,7 @@ var answer1 = 0
 var answer2 = 0
 
 for i, line in input:
-  for j, height in line:
+  for j, _ in line:
     # part 1
     if i == 0 or j == 0 or i == len(input) - 1 or j == len(line) - 1:
       answer1 += 1

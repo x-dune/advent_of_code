@@ -2,12 +2,11 @@ import std/algorithm
 import std/os
 import std/sequtils
 import std/strutils
-import std/sugar
 import std/tables
 
 let input = readFile(currentSourcePath.parentDir & "/input.txt")
   .split("\n\n")
-  .map(x => x.split('\n'))
+  .mapIt(it.splitLines)
 
 let stackAmount = ((len(input[0][0]) - 3) div 4) + 1
 var crates = initTable[int, seq[char]]()
@@ -24,7 +23,7 @@ for i, line in input[0].reversed:
 var cratesPart2 = crates
 
 for _, line in input[1]:
-  let instructions = line.split(' ')
+  let instructions = line.splitWhitespace
   let amount = parseInt($instructions[1])
   let source = parseInt($instructions[3])
   let target = parseInt($instructions[5])

@@ -1,7 +1,6 @@
 import std/os
 import std/sequtils
 import std/strutils
-import std/sugar
 import std/tables
 
 let input = readFile(currentSourcePath.parentDir & "/input.txt")
@@ -12,7 +11,7 @@ var dirSizes = initTable[string, int]()
 var totalUsedSize = 0
 var cwd: seq[string] = @[]
 for i, chunk in input:
-  let parts = chunk.strip().split('\n')
+  let parts = chunk.strip().splitLines
   if parts[0].startsWith("cd"):
     let dest = parts[0][3..^1]
     if dest == "..":
@@ -23,8 +22,8 @@ for i, chunk in input:
       cwd.add(dest)
   else:
     let size = parts[1..^1]
-      .filter(x => not x.startsWith("dir"))
-      .map((x) => parseInt(x.split(' ')[0]))
+      .filterIt(not it.startsWith("dir"))
+      .mapIt(parseInt(it.splitWhitespace[0]))
       .foldl(a+b, 0)
     totalUsedSize += size
     for i in 0..len(cwd) - 1:

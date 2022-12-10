@@ -1,19 +1,18 @@
 import std/os
 import std/sequtils
 import std/strutils
-import std/sugar
 
 let input = readFile(currentSourcePath.parentDir & "/input.txt")
   .strip
-  .split('\n')
-  .map((x) => x.map((y) => parseInt($y)))
+  .splitLines
+  .mapIt(it.mapIt(parseInt($it)))
 
 proc isVisible(y: int, x: int, grid: seq[seq[int]]): bool =
   let current = grid[y][x]
-  if grid[y][0..x-1].all((z) => z < current) or
-    grid[y][x+1..^1].all((z) => z < current) or
-    grid[0..y-1].map(z => z[x]).all((z) => z < current) or
-    grid[y+1..^1].map(z => z[x]).all((z) => z < current):
+  if grid[y][0..x-1].allIt(it < current) or
+    grid[y][x+1..^1].allIt(it < current) or
+    grid[0..y-1].mapIt(it[x]).allIt(it < current) or
+    grid[y+1..^1].mapIt(it[x]).allIt(it < current):
     return true
   else:
     return false

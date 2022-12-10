@@ -1,12 +1,11 @@
 import std/os
 import std/sequtils
 import std/strutils
-import std/sugar
 import std/tables
 
 let input = readFile(currentSourcePath.parentDir & "/input.txt")
   .strip
-  .split('\n').map(x => x.split(' '))
+  .splitLines.mapIt(it.splitWhitespace)
 
 
 # A/X - rock, B/Y - paper, C/Z - scissors

@@ -1,12 +1,11 @@
 import std/os
 import std/sequtils
 import std/strutils
-import std/sugar
 
 let input = readFile(currentSourcePath.parentDir & "/input.txt")
   .strip
   .split("\n")
-  .map(x => x.split(',').map(y => y.split('-').map(z => parseInt(z))))
+  .mapIt(it.split(',').mapIt(it.split('-').mapIt(parseInt(it))))
 
 var answer1 = 0
 var answer2 = 0

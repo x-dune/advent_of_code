@@ -1,8 +1,6 @@
 import std/sequtils
 import std/strutils
 
-let input = readAll(stdin).strip.splitLines.mapIt(it.mapIt(parseInt($it)))
-
 proc isVisible(y: int, x: int, grid: seq[seq[int]]): bool =
   let current = grid[y][x]
   if grid[y][0..x-1].allIt(it < current) or
@@ -37,20 +35,26 @@ proc scenicScore(y: int, x: int, grid: seq[seq[int]]): int =
       break
   return top * left * down * right
 
-var answer1 = 0
-var answer2 = 0
+proc solve*(input: string): (int, int) =
+  let grid = input.strip.splitLines.mapIt(it.mapIt(parseInt($it)))
+  var answer1 = 0
+  var answer2 = 0
 
-for i, line in input:
-  for j, _ in line:
-    # part 1
-    if i == 0 or j == 0 or i == input.high or j == line.high:
-      answer1 += 1
-    else:
-      if isVisible(i, j, input):
+  for i, line in grid:
+    for j, _ in line:
+      # part 1
+      if i == 0 or j == 0 or i == grid.high or j == line.high:
         answer1 += 1
-      # part 2
-      let currentScenicScore = scenicScore(i, j, input)
-      if currentScenicScore > answer2:
-        answer2 = currentScenicScore
+      else:
+        if isVisible(i, j, grid):
+          answer1 += 1
+        # part 2
+        let currentScenicScore = scenicScore(i, j, grid)
+        if currentScenicScore > answer2:
+          answer2 = currentScenicScore
+  return (answer1, answer2)
 
-echo answer1, '\n', answer2
+if isMainModule:
+  let answers = solve(readAll(stdin))
+  echo answers[0], '\n', answers[1]
+

@@ -17,14 +17,13 @@ var xs = newSeq[int]()
 var answer2 = collect(for _ in 0..5: "........................................")
 for i, instruction in prependedInput:
   let cycle = i + 1
-
   if cycle in [20, 60, 100, 140, 180, 220]:
     xs.add(cycle * x)
 
-  let spritePosition = [x-1, x, x+1]
-  let crtY = ((cycle-1) div 40)
-  let crtX = (cycle-1) mod 40
-  if crtX in spritePosition:
+  let spritePositions = [x-1, x, x+1]
+  let crtY = i div 40
+  let crtX = i mod 40
+  if crtX in spritePositions:
     answer2[crtY][crtX] = '#'
 
   if instruction != "noop":

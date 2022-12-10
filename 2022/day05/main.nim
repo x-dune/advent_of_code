@@ -1,12 +1,9 @@
 import std/algorithm
-import std/os
 import std/sequtils
 import std/strutils
 import std/tables
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt")
-  .split("\n\n")
-  .mapIt(it.splitLines)
+let input = readAll(stdin).split("\n\n").mapIt(it.splitLines)
 
 let stackAmount = ((len(input[0][0]) - 3) div 4) + 1
 var crates = initTable[int, seq[char]]()

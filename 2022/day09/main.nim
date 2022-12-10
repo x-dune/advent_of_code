@@ -1,9 +1,8 @@
-import std/os
 import std/sequtils
 import std/sets
 import std/strutils
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt")
+let input = readAll(stdin)
   .strip
   .splitLines
   .mapIt((it.splitWhitespace[0], parseInt(it.splitWhitespace[1])))

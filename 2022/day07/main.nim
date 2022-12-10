@@ -1,11 +1,8 @@
-import std/os
 import std/sequtils
 import std/strutils
 import std/tables
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt")
-  .strip
-  .split("$ ")[1..^1]
+let input = readAll(stdin).strip.split("$ ")[1..^1]
 
 var dirSizes = initTable[string, int]()
 var totalUsedSize = 0

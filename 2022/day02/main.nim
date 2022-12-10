@@ -1,12 +1,8 @@
-import std/os
 import std/sequtils
 import std/strutils
 import std/tables
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt")
-  .strip
-  .splitLines.mapIt(it.splitWhitespace)
-
+let input = readAll(stdin).strip.splitLines.mapIt(it.splitWhitespace)
 
 # A/X - rock, B/Y - paper, C/Z - scissors
 let winTable = {"A": "B", "B": "C", "C": "A"}.toTable

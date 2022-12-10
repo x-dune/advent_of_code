@@ -1,7 +1,6 @@
-import std/os
 import std/strutils
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt").strip.splitLines
+let input = readAll(stdin).strip.splitLines
 
 proc getPriority(c: char): int =
   if c.isLowerAscii:

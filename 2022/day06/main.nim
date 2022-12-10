@@ -1,8 +1,7 @@
-import std/os
 import std/sets
 import std/strutils
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt").strip
+let input = readAll(stdin).strip
 
 var answer1 = 0
 var answer2 = 0

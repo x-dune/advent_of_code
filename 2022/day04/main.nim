@@ -1,8 +1,7 @@
-import std/os
 import std/sequtils
 import std/strutils
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt")
+let input = readAll(stdin)
   .strip
   .split("\n")
   .mapIt(it.split(',').mapIt(it.split('-').mapIt(parseInt(it))))

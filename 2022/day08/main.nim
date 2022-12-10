@@ -1,11 +1,7 @@
-import std/os
 import std/sequtils
 import std/strutils
 
-let input = readFile(currentSourcePath.parentDir & "/input.txt")
-  .strip
-  .splitLines
-  .mapIt(it.mapIt(parseInt($it)))
+let input = readAll(stdin).strip.splitLines.mapIt(it.mapIt(parseInt($it)))
 
 proc isVisible(y: int, x: int, grid: seq[seq[int]]): bool =
   let current = grid[y][x]

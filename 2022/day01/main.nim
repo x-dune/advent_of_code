@@ -2,13 +2,16 @@ import std/algorithm
 import std/sequtils
 import std/strutils
 
-let input = readAll(stdin)
-  .strip
-  .split("\n\n").mapIt(it.splitLines.mapIt(parseInt(it)))
+proc solve*(input: string): (int, int) =
+  let calorieGroups = input
+    .strip
+    .split("\n\n").mapIt(it.splitLines.mapIt(parseInt(it)))
 
-var caloriesSum = input.mapIt(it.foldl(a + b))
-  .sorted(system.cmp[int], Descending)
-let answer1 = caloriesSum[0]
-let answer2 = caloriesSum[0] + caloriesSum[1] + caloriesSum[2]
+  var caloriesSum = calorieGroups.mapIt(it.foldl(a + b))
+    .sorted(system.cmp[int], Descending)
 
-echo answer1, '\n', answer2
+  return (caloriesSum[0], caloriesSum[0] + caloriesSum[1] + caloriesSum[2])
+
+if isMainModule:
+  let answers = solve(readAll(stdin))
+  echo answers[0], '\n', answers[1]

@@ -29,7 +29,7 @@ proc compare(left, right: JsonNode): int =
     return inOrder(left.len, right.len)
 
 proc solve*(input: string): (int, int) =
-  let packets = input.split('\n').filterIt(it != "").mapIt(it.parseJson)
+  let packets = input.splitLines.filterIt(it != "").mapIt(it.parseJson)
   var answer1 = 0
   for i, pair in packets.distribute(packets.len div 2):
     if compare(pair[0], pair[1]) == -1:

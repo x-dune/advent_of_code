@@ -31,11 +31,11 @@ proc solve*(input: string): (int, int) =
     var nextElves = initHashSet[Point]()
     var didMove = false
     for elf in elves:
-      if adjacent.mapIt(it+elf).allIt(it notin elves): nextElves.incl(elf)
+      if adjacent.allIt(it+elf notin elves): nextElves.incl(elf)
       else:
         for j in 0..3:
           let toCheck = checkPoints[checkOrder[(i+j) mod checkOrder.len]]
-          if toCheck.mapIt(it+elf).allIt(it notin elves):
+          if toCheck.allIt(it+elf notin elves):
             let nextPoint = elf+toCheck[0]
             discard proposedMove.hasKeyOrPut(nextPoint, @[])
             proposedMove[nextPoint].add(elf)

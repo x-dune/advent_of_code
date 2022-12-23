@@ -16,6 +16,7 @@ import day11/main as day11
 import day12/main as day12
 import day13/main as day13
 import day14/main as day14
+import day15/main as day15
 import day16/main as day16
 import day17/main as day17
 import day18/main as day18
@@ -65,6 +66,8 @@ suite "advent of code 2022":
     check(day13.solve(readFile(pathPrefix & "/day13/test.txt")) == (13, 140))
   test "day 14":
     check(day14.solve(readFile(pathPrefix & "/day14/test.txt")) == (24, 93))
+  test "day 15":
+    check(day15.solve(readFile(pathPrefix & "/day15/test.txt"), true) == (26, 56000011))
   test "day 16":
     check(day16.solve(readFile(pathPrefix & "/day16/test.txt")) == (1651, 1707))
   test "day 17":

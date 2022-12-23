@@ -83,5 +83,7 @@ suite "advent of code 2022":
     check(day20.solve(readFile(pathPrefix & "/day20/test.txt")) == (3, 1623178306))
   test "day 21":
     check(day21.solve(readFile(pathPrefix & "/day21/test.txt")) == (152, 301))
+  # day 22 contains a non-trivial difference in the example vs actual input 
+  # this causes my solution to not work for the example input
   test "day 23":
     check(day23.solve(readFile(pathPrefix & "/day23/test2.txt")) == (110, 20))

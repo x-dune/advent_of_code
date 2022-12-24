@@ -24,6 +24,7 @@ import day19/main as day19
 import day20/main as day20
 import day21/main as day21
 import day23/main as day23
+import day24/main as day24
 
 const pathPrefix = currentSourcePath.parentDir
 
@@ -83,7 +84,9 @@ suite "advent of code 2022":
     check(day20.solve(readFile(pathPrefix & "/day20/test.txt")) == (3, 1623178306))
   test "day 21":
     check(day21.solve(readFile(pathPrefix & "/day21/test.txt")) == (152, 301))
-  # day 22 contains a non-trivial difference in the example vs actual input 
+  # day 22 contains a non-trivial difference in the example vs actual input
   # this causes my solution to not work for the example input
   test "day 23":
     check(day23.solve(readFile(pathPrefix & "/day23/test2.txt")) == (110, 20))
+  test "day 24":
+    check(day24.solve(readFile(pathPrefix & "/day24/test.txt")) == (18, 54))

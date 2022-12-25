@@ -25,6 +25,7 @@ import day20/main as day20
 import day21/main as day21
 import day23/main as day23
 import day24/main as day24
+import day25/main as day25
 
 const pathPrefix = currentSourcePath.parentDir
 
@@ -90,3 +91,5 @@ suite "advent of code 2022":
     check(day23.solve(readFile(pathPrefix & "/day23/test2.txt")) == (110, 20))
   test "day 24":
     check(day24.solve(readFile(pathPrefix & "/day24/test.txt")) == (18, 54))
+  test "day 25":
+    check(day25.solve(readFile(pathPrefix & "/day25/test.txt")) == "2=-1=0")

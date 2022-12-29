@@ -63,7 +63,7 @@ suite "advent of code 2022":
     ]
     check(day10.solve(readFile(pathPrefix & "/day10/test.txt")) == (13140, crtDisplay))
   test "day 11":
-    check(day11.solve(readFile(pathPrefix & "/day11/test.txt")) == (10605'i64, 2713310158))
+    check(day11.solve(readFile(pathPrefix & "/day11/test.txt")) == (10605i64, 2713310158))
   test "day 12":
     check(day12.solve(readFile(pathPrefix & "/day12/test.txt")) == (31, 29))
   test "day 13":
@@ -75,7 +75,7 @@ suite "advent of code 2022":
   test "day 16":
     check(day16.solve(readFile(pathPrefix & "/day16/test.txt")) == (1651, 1707))
   test "day 17":
-    check(day17.solve(readFile(pathPrefix & "/day17/test.txt"))[0] == 3068)
+    check(day17.solve(readFile(pathPrefix & "/day17/test.txt")) == (3068i64, 1514285714288))
   test "day 18":
     check(day18.solve(readFile(pathPrefix & "/day18/test1.txt"))[0] == 10)
     check(day18.solve(readFile(pathPrefix & "/day18/test2.txt")) == (64, 58))

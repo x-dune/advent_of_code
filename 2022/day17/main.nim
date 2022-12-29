@@ -4,6 +4,7 @@ import std/strutils
 import std/tables
 
 type Point = (int, int)
+proc `+`(a, b: Point): Point = (a[0]+b[0], a[1]+b[1])
 type Grid = Table[Point, char]
 let rockPoints = {
   '-': @[(0, 0), (1, 0), (2, 0), (3, 0)],
@@ -15,8 +16,7 @@ let rockPoints = {
 let rock = rockPoints.keys.toSeq
 
 proc isValid(grid: Grid, pos: Point, rockType: char): bool =
-  let (x, y) = pos
-  let points = rockPoints[rockType].mapIt((x+it[0], y+it[1]))
+  let points = rockPoints[rockType].mapIt(pos+it)
   let xSorted = points.mapIt(it[0]).sorted
   return xSorted[0] >= 0 and
     xSorted[^1] < 7 and
@@ -24,95 +24,88 @@ proc isValid(grid: Grid, pos: Point, rockType: char): bool =
 
 proc place(grid: Grid, pos: Point, rockType: char): (Grid, int) =
   var grid = grid
-  let (x, y) = pos
-  let points = rockPoints[rockType].mapIt((x+it[0], y+it[1]))
+  let points = rockPoints[rockType].mapIt(pos+it)
   for point in points:
     grid[point] = '#'
   let ys = points.mapIt(it[1])
   let localYMax = ys[ys.maxIndex]
   return (grid, localYMax)
 
-# proc draw(grid: Grid) =
-  # let ySorted = grid.keys.toSeq.mapIt(it[1]).sorted()
-  # let xSorted = grid.keys.toSeq.mapIt(it[0]).sorted()
-  # for y in countdown(ySorted[^1],ySorted[0]):
-  #   for x in xSorted[0]..xSorted[^1]:
-  #     stdout.write(grid.getOrDefault((x,y), '.'))
-  #   stdout.write('\n')
+# key: (yIncrement, recentGridState) value: stopped
+# recentGridState as in normalized points in yMax-100 to yMax
 
-# manual cycle detection
-# proc longestRepeatingSubstring(s: string): string =
-#   let n = s.len
-
-#   var dp = collect(for _ in 0..n: collect(for _ in 0..n: 0))
-
-#   var index = 0
-#   var resLen = 0
-
-#   for i in 1..n:
-#     for j in i+1..n:
-#       if s[i-1] == s[j-1] and dp[i-1][j-1] < j-i:
-#         dp[i][j] = dp[i-1][j-1] + 1
-
-#         if dp[i][j] > resLen:
-#           index = max(i, index)
-#           resLen = dp[i][j]
-#       else:
-#         dp[i][j] = 0
-
-#   return s[index-resLen..index-1]
-
-# proc repeated(increments: seq[int]): (bool, string) =
-#   let joined = increments.join
-#   let longest = longestRepeatingSubstring(joined)
-
-#   let isRepeated = longest.len > 20 and
-#     longest.len * 2 < joined.len and
-#     joined.endsWith(longest) and
-#     joined[0..^(longest.len + 1)].endsWith(longest)
-
-#   return (isRepeated, longest)
-
-proc solve*(input: string): (int, int) =
+proc solve*(input: string): (int64, int64) =
   let jets = input.strip.toSeq
 
   var grid = initTable[Point, char]()
   for i in 0..6:
     grid[(i, 0)] = '_' # floor
 
+  var answer1: int64 = 0
+  var answer2: int64 = 0
+  var stateRecord = initTable[(int, seq[Point]), int]()
+
   var i = 0
   var stopped = 0
   var yMax = 0
   var curr = (2, 4)
-  # var increments: seq[int]
-  while stopped < 2022:
+  while true:
+    if stopped == 2022 and answer1 == 0:
+      answer1 = yMax
+
     let rockType = rock[stopped mod rock.len]
     var next = curr
     # jet
     if jets[i mod jets.len] == '<':
-      next = (curr[0]-1, curr[1])
+      next = curr + (-1, 0)
     else:
-      next = (curr[0]+1, curr[1])
+      next = curr + (1, 0)
     if isValid(grid, next, rockType):
       curr = next
     # drop
-    next = (curr[0], curr[1]-1)
+    next = curr + (0, -1)
     if isValid(grid, next, rockType):
       curr = next
     else:
       let (nextGrid, localYMax) = place(grid, curr, rockType)
       grid = nextGrid
-      # increments.add(max(yMax, localYMax)-yMax)
-      yMax = max(yMax, localYMax)
+      let nextYmax = max(yMax, localYMax)
+      #region cycle detection
+      let yIncrement = nextYmax-yMax
+      let recentGridState = grid.keys.toSeq
+        .filterIt(it[1] > nextYmax-100)
+        .mapIt(it+(0, -nextYmax)).sorted
+      let state = (yIncrement, recentGridState)
+      if state notin stateRecord:
+        stateRecord[state] = stopped
+      else:
+        # cycle detected
+        let cycleStart = stateRecord[state]
+        let cycleLength = stopped-cycleStart
+        let yIncrements = stateRecord.pairs.toSeq.sortedByIt(it[1]).mapIt(it[0][0])
+        let yMaxBeforeCycle = yIncrements[0..cycleStart-1].foldl(a+b)
+        let cycleYIncrements = yIncrements[cycleStart..^1]
+        let yIncrementPerCycle = cycleYIncrements.foldl(a+b)
+
+        if answer1 == 0:
+          let repeatingStopped = 2022-cycleStart
+          answer1 = yMaxBeforeCycle +
+            ((repeatingStopped div cycleLength) * yIncrementPerCycle) +
+            cycleYIncrements[0..(repeatingStopped mod cycleLength)-1].foldl(a+b, 0)
+
+        let repeatingStopped = 1000000000000-cycleStart
+        answer2 = yMaxBeforeCycle +
+          ((repeatingStopped div cycleLength) * yIncrementPerCycle) +
+          cycleYIncrements[0..(repeatingStopped mod cycleLength)-1].foldl(a+b, 0)
+        break
+      #endregion cycle detection
+      yMax = nextYmax
       curr = (2, yMax+4)
       inc stopped
     inc i
 
-  # part2 was done with manual cycle detection
-  # TODO add automated part 2
-  return (yMax, 0)
+  return (answer1, answer2)
 
 if isMainModule:
   let answers = solve(stdin.readAll)
-  echo answers[0]
-  # echo answers[0], '\n', answers[1]
+  echo answers[0], '\n', answers[1]

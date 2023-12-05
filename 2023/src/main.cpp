@@ -17,6 +17,7 @@ int main(int argc, char *argv[]) {
 
   std::vector<std::function<void(std::vector<std::string>)>> days = {
       aoc::day01,
+      aoc::day02,
   };
 
   days[day_index](input);

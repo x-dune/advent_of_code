@@ -5,6 +5,8 @@
 
 #include "day.h"
 
+void empty_day(std::vector<std::string> input) {}
+
 int main(int argc, char *argv[]) {
   std::vector<std::string> input;
   std::string temp;
@@ -16,8 +18,7 @@ int main(int argc, char *argv[]) {
   int day_index = std::stoi(argv[1]) - 1;
 
   std::vector<std::function<void(std::vector<std::string>)>> days = {
-      aoc::day01,
-      aoc::day02,
+      aoc::day01, aoc::day02, empty_day, empty_day, empty_day, aoc::day06,
   };
 
   days[day_index](input);

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(advent_of_code_2023)
-set(CMAKE_CXX_STANDARD 23)
+project(advent_of_code_2020)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 find_package(Boost 1.74.0 REQUIRED)

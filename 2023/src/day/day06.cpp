@@ -9,6 +9,7 @@
 #include "../day.h"
 #include "../util.h"
 
+namespace {
 std::vector<int> parse_input_part1(std::string s) {
   auto split = util::resplit(s);
   auto result =
@@ -32,6 +33,7 @@ int64_t race(int64_t time, int64_t dist) {
   int64_t x2 = std::floor((time - sqrt(std::pow(time, 2) - (4 * dist))) / 2);
   return x1 - x2 - 1;
 }
+}  // namespace
 
 void aoc::day06(std::vector<std::string> input) {
   auto times = parse_input_part1(input[0]);

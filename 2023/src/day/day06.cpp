@@ -1,4 +1,5 @@
 #include <boost/algorithm/string/join.hpp>
+#include <cmath>
 #include <iostream>
 #include <numeric>
 #include <ranges>
@@ -26,17 +27,10 @@ int64_t parse_input_part2(std::string s) {
 }
 
 int64_t race(int64_t time, int64_t dist) {
-  int64_t possible = 0;
-  for (int j = 1; j < time; j++) {
-    if (j * (time - j) > dist) {
-      possible += 1;
-    } else if (possible > 0) {
-      // exit early, dist travelled is like a bell curve for increasing
-      // speed/decreasing time to travel
-      break;
-    }
-  }
-  return possible;
+  // quadratic formula method
+  int64_t x1 = std::ceil((time + sqrt(std::pow(time, 2) - (4 * dist))) / 2);
+  int64_t x2 = std::floor((time - sqrt(std::pow(time, 2) - (4 * dist))) / 2);
+  return x1 - x2 - 1;
 }
 
 void aoc::day06(std::vector<std::string> input) {

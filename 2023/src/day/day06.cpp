@@ -1,4 +1,3 @@
-#include <boost/algorithm/string/join.hpp>
 #include <cmath>
 #include <iostream>
 #include <numeric>

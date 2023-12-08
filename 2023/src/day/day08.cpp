@@ -1,12 +1,9 @@
-#include <algorithm>
 #include <cmath>
 #include <cstdint>
 #include <iostream>
-#include <numeric>
 #include <ranges>
 #include <regex>
 #include <string>
-#include <tuple>
 #include <vector>
 
 #include "../day.h"

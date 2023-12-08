@@ -10,4 +10,13 @@ std::vector<std::string> resplit(const std::string &string,
   std::sregex_token_iterator end;
   return {iter, end};
 }
+std::string join(const std::vector<std::string> &strings,
+                 const std::string separator) {
+  std::string result = strings[0];
+  for (int i = 1; i < strings.size(); i++) {
+    result += separator + strings[i];
+  }
+  return result;
+}
+
 }  // namespace util

@@ -13,4 +13,5 @@ void day06(std::vector<std::string> input);
 void day07(std::vector<std::string> input);
 void day08(std::vector<std::string> input);
 void day09(std::vector<std::string> input);
+void day11(std::vector<std::string> input);
 }  // namespace aoc

@@ -24,4 +24,5 @@ add_executable(
   src/day/day08.cpp
   src/day/day09.cpp
   src/day/day11.cpp
+  src/day/day12.cpp
 )

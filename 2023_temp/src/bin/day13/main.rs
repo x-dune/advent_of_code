@@ -1,6 +1,5 @@
 use std::{
     cmp,
-    collections::HashMap,
     io::{self, BufRead},
 };
 

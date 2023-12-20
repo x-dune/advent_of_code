@@ -11,4 +11,6 @@ std::vector<std::string> resplit(const std::string &string,
 
 std::string join(const std::vector<std::string> &strings,
                  const std::string separator);
+
+int64_t lcm(const std::vector<int64_t> ns);
 }  // namespace util

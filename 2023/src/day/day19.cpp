@@ -55,7 +55,7 @@ parse_input(std::vector<std::string> input) {
       auto split2 =
           util::resplit(split1[1].substr(0, split1[1].size() - 1), comma);
       std::vector<Rule> rules;
-      for (int i = 0; i < split2.size() - 1; i++) {
+      for (size_t i = 0; i < split2.size() - 1; i++) {
         char part = split2[i][0];
         char op = split2[i][1];
         auto split3 = util::resplit(split2[i].substr(2), colon);
@@ -134,7 +134,7 @@ int64_t solve2(std::map<std::string, Workflow> map) {
       continue;
     } else {
       Workflow workflow = map[id];
-      if (rule_index == workflow.rules.size()) {
+      if (rule_index == int(workflow.rules.size())) {
         q.push_back({workflow.fallback, 0, ranges});
       } else {
         auto& [_part, op, num, _id] = workflow.rules[rule_index];

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <iterator>
 #include <regex>
@@ -34,19 +35,19 @@ std::tuple<Ranges, Ranges, std::vector<Mapping>> parse_input(
                  std::back_inserter(seed_ranges),
                  [](auto s) -> auto { return std::pair(std::stol(s), 1); });
 
-  for (int i = 1; i < seed_split.size(); i += 2) {
+  for (size_t i = 1; i < seed_split.size(); i += 2) {
     seed_ranges2.push_back(
         {std::stol(seed_split[i]), std::stol(seed_split[i + 1])});
   }
 
   std::vector<Mapping> mapping;
 
-  for (auto i = 1; i != input_splits.size(); i++) {
+  for (size_t i = 1; i != input_splits.size(); i++) {
     auto map_splits = util::resplit(input_splits[i], std::regex("\n"));
     std::regex regex("\\s+");
 
     std::vector<MappingRange> mapping_ranges;
-    for (int i = 1; i < map_splits.size(); i++) {
+    for (size_t i = 1; i < map_splits.size(); i++) {
       auto map_ranges = util::resplit(map_splits[i], regex);
       mapping_ranges.push_back({std::stol(map_ranges[0]),
                                 std::stol(map_ranges[1]),
@@ -68,7 +69,7 @@ int64_t get_shortest_distance(Ranges seed_ranges,
     Ranges current_range = {seed_range};
     Ranges next_range;
 
-    for (int i = 0; i < mapping.size(); i++) {
+    for (size_t i = 0; i < mapping.size(); i++) {
       for (auto range : current_range) {
         int64_t start = range.first;
         int64_t length = range.second;

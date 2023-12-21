@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <iostream>
 #include <iterator>
@@ -14,8 +15,8 @@ namespace {
 using Coord = std::pair<int, int>;
 
 Coord get_start(std::vector<std::string> input) {
-  for (int y = 0; y < input.size(); y++) {
-    for (int x = 0; x < input[0].size(); x++) {
+  for (size_t y = 0; y < input.size(); y++) {
+    for (size_t x = 0; x < input[0].size(); x++) {
       if (input[y][x] == 'S') {
         return {y, x};
       }

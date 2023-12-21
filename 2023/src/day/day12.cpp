@@ -48,10 +48,10 @@ int64_t get_valid_count(std::string initial, std::vector<int> group, int i = 0,
     return cache[cache_key];
   }
 
-  if (i == initial.size()) {
+  if (i == int(initial.size())) {
     // base case
-    if ((group_done == group.size() && current_group == 0) ||
-        (group_done + 1 == group.size() &&
+    if ((group_done == int(group.size()) && current_group == 0) ||
+        (group_done + 1 == int(group.size()) &&
          current_group == group[group_done])) {
       return 1;
     } else {
@@ -68,7 +68,7 @@ int64_t get_valid_count(std::string initial, std::vector<int> group, int i = 0,
       } else if (current_group == 0) {
         result +=
             get_valid_count(initial, group, i + 1, current_group, group_done);
-      } else if (group_done < group.size() &&
+      } else if (group_done < int(group.size()) &&
                  current_group == group[group_done]) {
         result += get_valid_count(initial, group, i + 1, 0, group_done + 1);
       }

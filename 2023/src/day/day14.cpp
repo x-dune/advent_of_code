@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -8,13 +9,13 @@ namespace {
 std::vector<std::string> tilt_north(std::vector<std::string> grid) {
   std::vector<std::string> next_grid;
 
-  for (int y = 0; y < grid.size(); y++) {
+  for (size_t y = 0; y < grid.size(); y++) {
     next_grid.push_back(std::string(grid.size(), '.'));
   }
 
-  for (int x = 0; x < grid.size(); x++) {
+  for (size_t x = 0; x < grid.size(); x++) {
     int current_y = 0;
-    for (int y = 0; y < grid.size(); y++) {
+    for (size_t y = 0; y < grid.size(); y++) {
       auto current = grid[y][x];
       if (current == 'O') {
         next_grid[current_y][x] = 'O';
@@ -30,8 +31,8 @@ std::vector<std::string> tilt_north(std::vector<std::string> grid) {
 
 int get_north_load(std::vector<std::string> grid) {
   int load = 0;
-  for (int y = 0; y < grid.size(); y++) {
-    for (int x = 0; x < grid.size(); x++) {
+  for (size_t y = 0; y < grid.size(); y++) {
+    for (size_t x = 0; x < grid.size(); x++) {
       if (grid[y][x] == 'O') {
         load += grid.size() - y;
       }
@@ -43,9 +44,9 @@ int get_north_load(std::vector<std::string> grid) {
 std::vector<std::string> rotate_90(std::vector<std::string> grid) {
   std::vector<std::string> next_grid;
 
-  for (int x = 0; x < grid.size(); x++) {
+  for (size_t x = 0; x < grid.size(); x++) {
     std::string temp = "";
-    for (int y = 0; y < grid.size(); y++) {
+    for (size_t y = 0; y < grid.size(); y++) {
       temp.push_back(grid[grid.size() - 1 - y][x]);
     }
     next_grid.push_back(temp);
@@ -78,8 +79,8 @@ int solve_part2(std::vector<std::string> grid) {
   // detect cycles
   int last = north_loads[north_loads.size() - 1];
 
-  int cycle_length;
-  for (int i = 2; i < north_loads.size(); i++) {
+  int cycle_length = 0;
+  for (size_t i = 2; i < north_loads.size(); i++) {
     if (last == north_loads[north_loads.size() - i]) {
       cycle_length = i - 1;
       break;

@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <iostream>
 #include <iterator>
@@ -82,7 +83,7 @@ std::pair<int64_t, int64_t> solve(Map map,
 
   auto periodics = get_periodics(map);
   std::vector<int64_t> periodics_period;
-  for (auto i = 0; i < periodics.size(); i++) {
+  for (size_t i = 0; i < periodics.size(); i++) {
     periodics_period.push_back(0);
   }
 

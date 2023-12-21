@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cstddef>
 #include <ranges>
 #include <regex>
 #include <string>
@@ -15,7 +16,7 @@ std::vector<std::string> resplit(const std::string &string,
 std::string join(const std::vector<std::string> &strings,
                  const std::string separator) {
   std::string result = strings[0];
-  for (int i = 1; i < strings.size(); i++) {
+  for (size_t i = 1; i < strings.size(); i++) {
     result += separator + strings[i];
   }
   return result;

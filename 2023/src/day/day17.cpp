@@ -38,7 +38,7 @@ int solve(std::vector<std::vector<int>> grid, bool part2) {
       continue;
     }
     dist[{y, x, d, t}] = c;
-    for (int i = 0; i < UDLR.size(); i++) {
+    for (int i = 0; i < int(UDLR.size()); i++) {
       int next_y = y + UDLR[i].first;
       int next_x = x + UDLR[i].second;
       int next_t = d == i ? t + 1 : 1;

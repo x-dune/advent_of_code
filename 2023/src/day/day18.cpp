@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <cstdint>
 #include <cstdlib>
 #include <iostream>
@@ -61,7 +62,7 @@ int64_t solve(std::vector<Dig> digs) {
   }
 
   int64_t area = 0;
-  for (int i = 0; i < (edges.size() - 1); i++) {
+  for (size_t i = 0; i < (edges.size() - 1); i++) {
     int j = i + 1;
     area +=
         (edges[i].first * edges[j].second) - (edges[j].first * edges[i].second);

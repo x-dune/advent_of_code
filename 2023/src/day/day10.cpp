@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <map>
 #include <set>
@@ -105,8 +106,8 @@ int get_inner(std::vector<std::string> replaced_grid,
   bool inside_loop = false;
   int inner = 0;
 
-  for (int y = 0; y < replaced_grid.size(); y++) {
-    for (int x = 0; x < replaced_grid[0].size(); x++) {
+  for (size_t y = 0; y < replaced_grid.size(); y++) {
+    for (int x = 0; x < int(replaced_grid[0].size()); x++) {
       if (loop_coords.contains({y, x})) {
         auto c = replaced_grid[y][x];
         if (c == 'F' || c == '7' || c == '|') {

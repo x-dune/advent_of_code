@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <map>
 #include <optional>
@@ -24,8 +25,8 @@ std::map<IntPair, IntPair> BACK_SLASH = {{U, L}, {D, R}, {L, U}, {R, D}};
 std::optional<IntPair> in_bounds(IntPair pos, IntPair offset,
                                  std::vector<std::string> grid) {
   IntPair next = {pos.first + offset.first, pos.second + offset.second};
-  if (next.first >= 0 && next.first < grid.size() && next.second >= 0 &&
-      next.second < grid[0].size()) {
+  if (next.first >= 0 && next.first < int(grid.size()) && next.second >= 0 &&
+      next.second < int(grid[0].size())) {
     return std::optional(next);
   } else {
     return std::nullopt;
@@ -55,7 +56,6 @@ int beam_traversal(Beam start, std::vector<std::string> grid) {
                      {in_bounds(current.first, R, grid), R}};
     } else if (current_char == '/' || current_char == '\\') {
       auto handler = current_char == '/' ? FORWARD_SLASH : BACK_SLASH;
-      auto x = handler[current.second];
       next_option = {
           {in_bounds(current.first, handler[current.second], grid),
            handler[current.second]},
@@ -84,7 +84,7 @@ int beam_traversal(Beam start, std::vector<std::string> grid) {
 
 std::vector<Beam> get_edge_starts(std::vector<std::string> grid) {
   std::vector<Beam> result;
-  for (int i = 0; i < grid.size(); i++) {
+  for (size_t i = 0; i < grid.size(); i++) {
     result.push_back({{0, i}, D});
     result.push_back({{grid.size() - 1, i}, U});
     result.push_back({{i, 0}, R});

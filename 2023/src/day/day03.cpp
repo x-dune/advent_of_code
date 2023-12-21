@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <iostream>
 #include <ranges>
 #include <set>
@@ -36,10 +37,10 @@ void aoc::day03(std::vector<std::string> input) {
   std::vector<Coord> symbols = {};
   std::vector<Coord> maybe_gears = {};
 
-  for (int y = 0; y < input.size(); y++) {
+  for (size_t y = 0; y < input.size(); y++) {
     std::vector<Coord> sequence = {};
     std::string number_raw = "";
-    for (int x = 0; x < input[0].size(); x++) {
+    for (size_t x = 0; x < input[0].size(); x++) {
       auto cell = input[y][x];
       Coord coord = {y, x};
 

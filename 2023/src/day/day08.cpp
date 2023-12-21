@@ -1,4 +1,3 @@
-#include <cmath>
 #include <cstdint>
 #include <iostream>
 #include <ranges>
@@ -20,7 +19,7 @@ std::pair<Map, std::vector<std::string>> parse_input(
   auto regex1 = std::regex(" = ");
   auto regex2 = std::regex(", ");
 
-  for (int i = 2; i < input.size(); i++) {
+  for (size_t i = 2; i < input.size(); i++) {
     auto split1 = util::resplit(input[i], regex1);
     auto split2 =
         util::resplit(split1[1].substr(1, split1[1].size() - 2), regex2);

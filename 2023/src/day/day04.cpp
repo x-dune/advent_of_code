@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cstddef>
 #include <iostream>
 #include <numeric>
 #include <ranges>
@@ -58,12 +59,12 @@ void aoc::day04(std::vector<std::string> input) {
   int answer1 = 0;
   int answer2 = 0;
 
-  for (int i = 0; i < cards.size(); i++) {
+  for (size_t i = 0; i < cards.size(); i++) {
     auto card = cards[i];
     int matches = card.matches();
     if (matches > 0) {
       answer1 += std::pow(2, matches - 1);
-      for (int j = 1; j <= matches && (card.id + j) <= cards.size(); j++) {
+      for (int j = 1; j <= matches && (card.id + j) <= int(cards.size()); j++) {
         cards[card.id + j - 1].amount += card.amount;
       }
     }

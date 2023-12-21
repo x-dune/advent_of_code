@@ -1,3 +1,4 @@
+#include <cstddef>
 #include <iostream>
 #include <ranges>
 #include <regex>
@@ -28,7 +29,6 @@ std::vector<std::vector<CubeCount>> parse_input(
     auto bag_content = bag_split | std::ranges::views::transform([](auto s) {
                          auto entries = util::resplit(s, std::regex(", "));
                          CubeCount bag = {.red = 0, .green = 0, .blue = 0};
-                         auto a = "red";
                          for (auto entry : entries) {
                            auto entry_split = util::resplit(entry);
                            auto count = std::stoi(entry_split[0]);
@@ -55,7 +55,7 @@ void aoc::day02(std::vector<std::string> input) {
   auto games = parse_input(input);
   int answer1 = 0;
   int answer2 = 0;
-  for (int i = 0; i < games.size(); i++) {
+  for (size_t i = 0; i < games.size(); i++) {
     CubeCount fewest_possible = {.red = 0, .green = 0, .blue = 0};
     bool possible = true;
     for (auto round : games[i]) {

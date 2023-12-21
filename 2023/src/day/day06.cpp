@@ -1,4 +1,5 @@
 #include <cmath>
+#include <cstddef>
 #include <iostream>
 #include <numeric>
 #include <ranges>
@@ -20,7 +21,7 @@ std::vector<int> parse_input_part1(std::string s) {
 int64_t parse_input_part2(std::string s) {
   auto split = util::resplit(s);
   std::string result;
-  for (int i = 1; i < split.size(); i++) {
+  for (size_t i = 1; i < split.size(); i++) {
     result += split[i];
   }
   return stol(result);

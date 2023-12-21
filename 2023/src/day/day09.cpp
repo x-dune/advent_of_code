@@ -34,13 +34,12 @@ int is_done(std::vector<Sequence> sequences) {
 
 std::pair<int, int> extrapolate(Sequence sequence) {
   std::vector<Sequence> sequences = {sequence};
-  bool done = false;
   int i = 0;
 
   while (!is_done(sequences)) {
     Sequence current = sequences[i];
     Sequence next_sequence;
-    for (int j = 1; j < current.size(); j++) {
+    for (size_t j = 1; j < current.size(); j++) {
       next_sequence.push_back(current[j] - current[j - 1]);
     }
     sequences.push_back(next_sequence);

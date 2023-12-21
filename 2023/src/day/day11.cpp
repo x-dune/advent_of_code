@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <ranges>
@@ -10,10 +11,10 @@
 namespace {
 std::vector<std::pair<int, int>> expand_universe(std::vector<std::string> grid,
                                                  int expansion_factor) {
-  std::vector<int> empty_row_index;
-  std::vector<int> empty_col_index;
+  std::vector<size_t> empty_row_index;
+  std::vector<size_t> empty_col_index;
 
-  for (int y = 0; y < grid.size(); y++) {
+  for (size_t y = 0; y < grid.size(); y++) {
     auto line = grid[y];
     if (std::all_of(line.begin(), line.end(),
                     [](auto e) { return e == '.'; })) {
@@ -29,8 +30,8 @@ std::vector<std::pair<int, int>> expand_universe(std::vector<std::string> grid,
   std::vector<std::pair<int, int>> galaxies;
 
   int factor = expansion_factor - 1;
-  for (int y = 0; y < grid.size(); y++) {
-    for (int x = 0; x < grid[0].size(); x++) {
+  for (size_t y = 0; y < grid.size(); y++) {
+    for (size_t x = 0; x < grid[0].size(); x++) {
       char c = grid[y][x];
       if (c == '#') {
         int expand_y = std::ranges::count_if(empty_row_index,

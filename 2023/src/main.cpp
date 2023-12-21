@@ -5,9 +5,11 @@
 
 #include "day.h"
 
-void empty_day(std::vector<std::string> input) {}
-
 int main(int argc, char *argv[]) {
+  if (argc != 2) {
+    return 1;
+  }
+
   std::vector<std::string> input;
   std::string temp;
 

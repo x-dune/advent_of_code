@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <cstddef>
 #include <cstdint>
 #include <iostream>
 #include <iterator>
@@ -62,9 +63,9 @@ int solve_part2(std::vector<std::string> input) {
   }
 
   int total = 0;
-  for (int i = 0; i < boxes.size(); i++) {
+  for (size_t i = 0; i < boxes.size(); i++) {
     if (!boxes[i].empty()) {
-      for (int j = 0; j < boxes[i].size(); j++) {
+      for (size_t j = 0; j < boxes[i].size(); j++) {
         total += (i + 1) * (j + 1) * boxes[i][j].second;
       }
     }

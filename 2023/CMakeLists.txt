@@ -1,8 +1,11 @@
 cmake_minimum_required(VERSION 3.22)
 
 project(advent_of_code_2020)
+set(CMAKE_BUILD_TYPE Release)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")
 
 find_package(Boost 1.74.0 REQUIRED)
 
@@ -34,4 +37,5 @@ add_executable(
   src/day/day18.cpp
   src/day/day19.cpp
   src/day/day20.cpp
+  src/day/day21.cpp
 )

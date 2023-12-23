@@ -23,7 +23,7 @@ int main(int argc, char *argv[]) {
       aoc::day01, aoc::day02, aoc::day03, aoc::day04, aoc::day05, aoc::day06,
       aoc::day07, aoc::day08, aoc::day09, aoc::day10, aoc::day11, aoc::day12,
       aoc::day13, aoc::day14, aoc::day15, aoc::day16, aoc::day17, aoc::day18,
-      aoc::day19, aoc::day20, aoc::day21};
+      aoc::day19, aoc::day20, aoc::day21, aoc::day22};
 
   days[day_index](input);
 

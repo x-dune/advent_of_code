@@ -1,17 +1,18 @@
 const std = @import("std");
 
 pub fn main() !void {
-    const stdin = std.io.getStdIn().reader();
-
-    var left = std.ArrayList(u64).init(std.heap.page_allocator);
-    defer left.deinit();
-    var right = std.ArrayList(u64).init(std.heap.page_allocator);
-    defer right.deinit();
-
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    defer std.debug.assert(gpa.deinit() == .ok);
     const allocator = gpa.allocator();
 
+    var left = std.ArrayList(u64).init(allocator);
+    defer left.deinit();
+    var right = std.ArrayList(u64).init(allocator);
+    defer right.deinit();
+
+    const stdin = std.io.getStdIn().reader();
     while (try stdin.readUntilDelimiterOrEofAlloc(allocator, '\n', 2000)) |line| {
+        defer allocator.free(line);
         var it = std.mem.splitSequence(u8, line, "   ");
 
         const left_number = try std.fmt.parseInt(u64, it.next().?, 10);

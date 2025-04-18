@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"sort"
+	"strconv"
 	"strings"
 )
 
@@ -14,9 +15,8 @@ func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 	for scanner.Scan() {
 		fields := strings.Fields(scanner.Text())
-		var leftNum, rightNum int
-		fmt.Sscanf(fields[0], "%d", &leftNum)
-		fmt.Sscanf(fields[1], "%d", &rightNum)
+		leftNum, _ := strconv.Atoi(fields[0])
+		rightNum, _ := strconv.Atoi(fields[1])
 		left = append(left, leftNum)
 		right = append(right, rightNum)
 	}
@@ -27,7 +27,7 @@ func main() {
 	var answer1 = 0
 	var answer2 = 0
 	var count = make(map[int]int)
-	for i := 0; i < len(left); i++ {
+	for i := range left {
 		diff := utils.Abs(left[i] - right[i])
 		count[right[i]]++
 		answer1 += diff

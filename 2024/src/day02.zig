@@ -60,35 +60,15 @@ pub fn main() !void {
     var answer2: i64 = 0;
 
     for (reports.items) |levels| {
-        if (isValid(levels.items)) answer1 += 1;
-    }
-
-    for (reports.items) |levels| {
-        if (try validWithoutIndex(allocator, levels.items, 0)) {
+        if (isValid(levels.items)) {
+            answer1 += 1;
             answer2 += 1;
             continue;
         }
-        for (0..levels.items.len - 1) |i| {
-            const diff1 = levels.items[i + 1] - levels.items[i];
-            if (@abs(diff1) < 1 or @abs(diff1) > 3) {
-                const valid1 = try validWithoutIndex(allocator, levels.items, i);
-                const valid2 = try validWithoutIndex(allocator, levels.items, i + 1);
-                if (valid1 or valid2) {
-                    answer2 += 1;
-                    break;
-                }
-            }
-            if (i + 2 < levels.items.len) {
-                const diff2 = levels.items[i + 2] - levels.items[i + 1];
-                if ((diff1 > 0) != (diff2 > 0)) {
-                    const valid1 = try validWithoutIndex(allocator, levels.items, i);
-                    const valid2 = try validWithoutIndex(allocator, levels.items, i + 1);
-                    const valid3 = try validWithoutIndex(allocator, levels.items, i + 2);
-                    if (valid1 or valid2 or valid3) {
-                        answer2 += 1;
-                        break;
-                    }
-                }
+        for (0..levels.items.len) |i| {
+            if (try validWithoutIndex(allocator, levels.items, i)) {
+                answer2 += 1;
+                break;
             }
         }
     }

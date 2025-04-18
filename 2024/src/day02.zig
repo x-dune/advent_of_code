@@ -1,5 +1,34 @@
 const std = @import("std");
 
+fn isValid(items: []const i64) bool {
+    var valid = true;
+    var all_inc = true;
+    var all_dec = true;
+    for (items[0 .. items.len - 1], items[1..]) |x, y| {
+        const diff = y - x;
+        if (diff > 0) {
+            all_inc = false;
+        }
+        if (diff < 0) {
+            all_dec = false;
+        }
+        if (@abs(diff) < 1 or @abs(diff) > 3) {
+            valid = false;
+            break;
+        }
+    }
+    return valid and (all_inc or all_dec);
+}
+
+fn validWithoutIndex(allocator: std.mem.Allocator, items: []i64, index: usize) !bool {
+    var new_items = std.ArrayList(i64).init(allocator);
+    defer new_items.deinit();
+    for (items, 0..) |item, i| {
+        if (i != index) try new_items.append(item);
+    }
+    return isValid(new_items.items);
+}
+
 pub fn main() !void {
     var gpa = std.heap.GeneralPurposeAllocator(.{}){};
     defer std.debug.assert(gpa.deinit() == .ok);
@@ -27,29 +56,42 @@ pub fn main() !void {
         try reports.append(levels);
     }
 
-    // for (reports.items) |levels| {
-    //     for (levels.items[0..1]) |x| {
-    //         std.debug.print("{} ", .{x});
-    //     }
-    //     std.debug.print("\n", .{});
-    // }
-
     var answer1: i64 = 0;
+    var answer2: i64 = 0;
 
     for (reports.items) |levels| {
-        const is_ascending = levels.items[0] < levels.items[1];
-        var valid = true;
-        for (levels.items[0 .. levels.items.len - 1], levels.items[1..]) |x, y| {
-            const diff = y - x;
-            // std.debug.print(" xxx {} xxx ", .{diff});
-            if ((is_ascending and diff < 1 or diff > 3) or (!is_ascending and diff > -1 or diff < -3)) {
-                valid = false;
-            }
-            // std.debug.print("{} ", .{x});
-        }
-        if (valid) answer1 += 1;
-        // std.debug.print("- {} - {}\n", .{ is_ascending, valid });
+        if (isValid(levels.items)) answer1 += 1;
     }
 
-    std.debug.print("{}\n", .{answer1});
+    for (reports.items) |levels| {
+        if (try validWithoutIndex(allocator, levels.items, 0)) {
+            answer2 += 1;
+            continue;
+        }
+        for (0..levels.items.len - 1) |i| {
+            const diff1 = levels.items[i + 1] - levels.items[i];
+            if (@abs(diff1) < 1 or @abs(diff1) > 3) {
+                const valid1 = try validWithoutIndex(allocator, levels.items, i);
+                const valid2 = try validWithoutIndex(allocator, levels.items, i + 1);
+                if (valid1 or valid2) {
+                    answer2 += 1;
+                    break;
+                }
+            }
+            if (i + 2 < levels.items.len) {
+                const diff2 = levels.items[i + 2] - levels.items[i + 1];
+                if ((diff1 > 0) != (diff2 > 0)) {
+                    const valid1 = try validWithoutIndex(allocator, levels.items, i);
+                    const valid2 = try validWithoutIndex(allocator, levels.items, i + 1);
+                    const valid3 = try validWithoutIndex(allocator, levels.items, i + 2);
+                    if (valid1 or valid2 or valid3) {
+                        answer2 += 1;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    std.debug.print("{}\n{}\n", .{ answer1, answer2 });
 }

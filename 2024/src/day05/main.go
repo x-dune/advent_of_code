@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"sort"
 	"strconv"
 	"strings"
 )
@@ -12,17 +13,40 @@ type Rules = map[string]bool
 type Updates = [][]string
 
 func main() {
-	answer1 := 0
+	var answer1, answer2 int
 	rules, updates := parseInput()
-	for _, update := range updates {
-		if isCorrectOrder(update, rules) {
-			num, _ := strconv.Atoi(update[len(update)/2])
+	for _, pageNumbers := range updates {
+		if isCorrectOrder(pageNumbers, rules) {
+			num, _ := strconv.Atoi(pageNumbers[len(pageNumbers)/2])
 			answer1 += num
+		} else {
+			pageNumberCount := make(map[string]int)
+			for i := range pageNumbers {
+				pageNumberCount[pageNumbers[i]] = countLeftOrder(rules, pageNumbers, i)
+			}
+			sort.Slice(pageNumbers, func(i, j int) bool {
+				return pageNumberCount[pageNumbers[i]] > pageNumberCount[pageNumbers[j]]
+			})
+			num, _ := strconv.Atoi(pageNumbers[len(pageNumbers)/2])
+			answer2 += num
 		}
 	}
-	// fmt.Println(rules)
-	// fmt.Println(updates)
 	fmt.Println(answer1)
+	fmt.Println(answer2)
+}
+
+// count the times a pageNumber appears as the left side of the ordering rule
+func countLeftOrder(rules Rules, pageNumbers []string, i int) int {
+	count := 0
+	for j := range pageNumbers {
+		if i != j {
+			key := pageNumbers[i] + "|" + pageNumbers[j]
+			if rules[key] {
+				count += 1
+			}
+		}
+	}
+	return count
 }
 
 func parseInput() (Rules, Updates) {
@@ -39,23 +63,21 @@ func parseInput() (Rules, Updates) {
 		if !afterRules {
 			rules[text] = true
 		} else {
-			var update []string
+			var pageNumbers []string
 			for s := range strings.SplitSeq(text, ",") {
-				update = append(update, s)
+				pageNumbers = append(pageNumbers, s)
 			}
-			updates = append(updates, update)
+			updates = append(updates, pageNumbers)
 		}
 	}
 	return rules, updates
 }
 
-func isCorrectOrder(update []string, rules Rules) bool {
-	for i := range update {
-		for j := i + 1; j < len(update); j++ {
-			key := update[i] + "|" + update[j]
-			_, exists := rules[key]
-			if !exists {
-				fmt.Println(i, j, key)
+func isCorrectOrder(pageNumbers []string, rules Rules) bool {
+	for i := range pageNumbers {
+		for j := i + 1; j < len(pageNumbers); j++ {
+			key := pageNumbers[i] + "|" + pageNumbers[j]
+			if !rules[key] {
 				return false
 			}
 		}

@@ -15,8 +15,8 @@ func main() {
 
 	answer1 := 0
 	answer2 := 0
-	for y, column := range grid {
-		for x, cell := range column {
+	for y, row := range grid {
+		for x, cell := range row {
 			if cell == 'X' {
 				answer1 += countNeighbourXmas(grid, y, x)
 			}

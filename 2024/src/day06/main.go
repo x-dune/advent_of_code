@@ -33,7 +33,26 @@ func main() {
 			}
 		}
 	}
+	answer1, posSeen := travel(grid, guard, guardSequence)
+	answer2 := 0
+	for pos := range posSeen {
+		if (pos[0] == guard.yPos && pos[1] == guard.xPos) || grid[pos[0]][pos[1]] == '#' {
+			continue
+		}
+		grid[pos[0]][pos[1]] = '#'
+		len, _ := travel(grid, guard, guardSequence)
+		if len == -1 {
+			answer2 += 1
+		}
+		// reset grid
+		grid[pos[0]][pos[1]] = '.'
+	}
 
+	fmt.Println(answer1)
+	fmt.Println(answer2)
+}
+
+func travel(grid [][]rune, guard Guard, guardSequence map[rune]rune) (int, map[[2]int]bool) {
 	guardSeen := map[Guard]bool{guard: true}
 	posSeen := map[[2]int]bool{{guard.yPos, guard.xPos}: true}
 	for {
@@ -56,7 +75,7 @@ func main() {
 			guard.facing = guardSequence[guard.facing]
 			if guardSeen[guard] {
 				// prevent infinite loops
-				break
+				return -1, posSeen
 			} else {
 				guardSeen[guard] = true
 			}
@@ -64,15 +83,7 @@ func main() {
 			guard.yPos = ny
 			guard.xPos = nx
 			posSeen[[2]int{ny, nx}] = true
-			// grid[ny][nx] = 'X'
 		}
-		// fmt.Println(guard.yPos, guard.xPos, string(guard.facing), string(grid[ny][nx]))
 	}
-	// for _, row := range grid {
-	// 	for _, cell := range row {
-	// 		fmt.Print(string(cell))
-	// 	}
-	// 	fmt.Print("\n")
-	// }
-	fmt.Println(len(posSeen))
+	return len(posSeen), posSeen
 }
